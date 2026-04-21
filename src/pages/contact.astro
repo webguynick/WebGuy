@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MailchimpForm from '../components/MailchimpForm.astro';
+
+// TODO: Replace with your Formspree / Basin / Getform endpoint, or wire a serverless function.
+const FORM_ENDPOINT = import.meta.env.PUBLIC_CONTACT_ENDPOINT || 'https://formspree.io/f/REPLACE_ME';
+---
+<BaseLayout
+  title="Contact — Web Guy Nick"
+  description="Tell Web Guy Nick LLC about your small-business website project. Free quote, no pressure."
+>
+  <section class="mx-auto max-w-3xl px-5 pt-16 pb-10">
+    <h1 class="text-4xl font-extrabold text-white md:text-5xl">Let's talk</h1>
+    <p class="mt-4 text-lg text-slate-300">
+      Tell me about your business and what you want the site to do. I'll get back within one business day.
+      Prefer email? <a href="mailto:info@webguynick.com" class="text-brand-accent underline">info@webguynick.com</a> ·
+      Phone: <a href="tel:+19515360028" class="text-brand-accent underline">(951) 536-0028</a>.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-5 pb-16">
+    <form
+      action={FORM_ENDPOINT}
+      method="post"
+      class="card grid gap-4"
+    >
+      <div class="grid gap-4 md:grid-cols-2">
+        <label class="block">
+          <span class="text-sm text-slate-300">Your name</span>
+          <input name="name" required type="text" class="mt-1 w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-white placeholder:text-slate-500 focus:border-brand-accent focus:outline-none" />
+        </label>
+        <label class="block">
+          <span class="text-sm text-slate-300">Email</span>
+          <input name="email" required type="email" class="mt-1 w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-white placeholder:text-slate-500 focus:border-brand-accent focus:outline-none" />
+        </label>
+      </div>
+      <label class="block">
+        <span class="text-sm text-slate-300">Business / website</span>
+        <input name="business" type="text" class="mt-1 w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-white placeholder:text-slate-500 focus:border-brand-accent focus:outline-none" />
+      </label>
+      <label class="block">
+        <span class="text-sm text-slate-300">What are you trying to do?</span>
+        <textarea name="message" required rows="5" class="mt-1 w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-white placeholder:text-slate-500 focus:border-brand-accent focus:outline-none"></textarea>
+      </label>
+      <!-- Honeypot -->
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="position:absolute;left:-5000px" aria-hidden="true" />
+      <button type="submit" class="btn-primary justify-center">Send</button>
+      <p class="text-xs text-slate-500">By submitting you agree to our <a href="/privacy" class="underline">Privacy Policy</a>.</p>
+    </form>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-5 pb-24">
+    <MailchimpForm variant="card" headline="Prefer email updates?" subhead="Same tips, in your inbox." />
+  </section>
+</BaseLayout>

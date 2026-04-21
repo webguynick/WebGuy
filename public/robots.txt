@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://webguynick.com/sitemap-index.xml

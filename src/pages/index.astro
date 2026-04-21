@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CodeRain from '../components/CodeRain.astro';
+import MailchimpForm from '../components/MailchimpForm.astro';
+import { getCollection } from 'astro:content';
+
+const latest = (await getCollection('articles', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+<BaseLayout
+  title="Web Guy Nick — Websites That Sell for Small Businesses"
+  description="Conversion-led websites, fast hosting, SEO, and ongoing maintenance for small businesses. Built by Web Guy Nick LLC."
+>
+  <!-- HERO -->
+  <section class="relative overflow-hidden">
+    <CodeRain />
+    <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-brand-black/60 via-brand-black/80 to-brand-black"></div>
+
+    <div class="relative mx-auto max-w-7xl px-5 pt-20 pb-28 md:pt-32 md:pb-40">
+      <div class="max-w-3xl">
+        <span class="inline-flex items-center gap-2 rounded-full border border-brand-accent/40 bg-brand-accent/10 px-3 py-1 text-xs font-medium text-brand-accent">
+          <span class="h-2 w-2 rounded-full bg-brand-accent"></span>
+          Web Guy Nick LLC
+        </span>
+        <h1 class="mt-6 text-4xl font-extrabold leading-tight tracking-tight text-white md:text-6xl">
+          Your website should be your <span class="text-brand-accent">best salesperson.</span>
+        </h1>
+        <p class="mt-6 max-w-2xl text-lg text-slate-300 md:text-xl">
+          Straightforward websites for small businesses — fast, secure, and built to convert.
+          No page-builder bloat. No renewal-price games. Just sites that sell.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="/contact" class="btn-primary">Get a Free Quote</a>
+          <a href="/services" class="btn-ghost">See Services</a>
+        </div>
+        <div class="mt-10 flex flex-wrap items-center gap-6 text-sm text-slate-400">
+          <div>⚡ LCP under 1.5s</div>
+          <div>🔒 Secure by default</div>
+          <div>📱 Mobile-first</div>
+          <div>🔁 Updated daily</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="mx-auto max-w-7xl px-5 py-20">
+    <div class="mb-10 max-w-2xl">
+      <h2 class="text-3xl font-bold text-white md:text-4xl">What I do for small businesses</h2>
+      <p class="mt-3 text-slate-300">Three focused offerings. No fluff, no upsells you don't need.</p>
+    </div>
+    <div class="grid gap-6 md:grid-cols-3">
+      <div class="card">
+        <div class="text-brand-accent text-sm font-semibold">01 — Design</div>
+        <h3 class="mt-2 text-xl font-semibold text-white">Conversion-Led Design</h3>
+        <p class="mt-3 text-slate-300">Design psychology and user-flow mapping that directs visitors to your contact button — not your about page.</p>
+      </div>
+      <div class="card">
+        <div class="text-brand-accent text-sm font-semibold">02 — Build</div>
+        <h3 class="mt-2 text-xl font-semibold text-white">Performance Engineering</h3>
+        <p class="mt-3 text-slate-300">Modern static sites, real CDNs, and an obsessive page-weight budget. 90+ on Core Web Vitals is the floor.</p>
+      </div>
+      <div class="card">
+        <div class="text-brand-accent text-sm font-semibold">03 — Maintain</div>
+        <h3 class="mt-2 text-xl font-semibold text-white">Digital Concierge</h3>
+        <p class="mt-3 text-slate-300">Ongoing security patches, speed tune-ups, and content updates. Your site gets better every month.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOSTING CTA -->
+  <section class="border-y border-white/10 bg-white/[0.02]">
+    <div class="mx-auto max-w-7xl px-5 py-16 md:grid md:grid-cols-2 md:gap-10">
+      <div>
+        <h2 class="text-3xl font-bold text-white md:text-4xl">Hosting, without the trap doors</h2>
+        <p class="mt-3 text-slate-300">
+          I maintain an honest, regularly-updated comparison of the hosts I'd actually put my own clients on —
+          with discounted signup links at <a href="https://link.me/webguynick" class="text-brand-accent underline">link.me/webguynick</a>.
+        </p>
+        <div class="mt-6 flex gap-3">
+          <a href="/hosting" class="btn-primary">Compare Hosting</a>
+          <a href="https://link.me/webguynick" class="btn-ghost">Get Discounts</a>
+        </div>
+      </div>
+      <div class="mt-10 md:mt-0">
+        <div class="card">
+          <div class="text-sm font-semibold text-brand-accent">Top pick right now</div>
+          <h3 class="mt-2 text-xl font-semibold text-white">Cloudflare Pages</h3>
+          <p class="mt-2 text-slate-300">Free tier, global edge, unmetered bandwidth. TTFB under 100ms in most of the US.</p>
+          <a href="/hosting" class="mt-4 inline-block text-brand-accent underline">See full review →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LATEST ARTICLES -->
+  <section class="mx-auto max-w-7xl px-5 py-20">
+    <div class="mb-10 flex items-end justify-between gap-4">
+      <div>
+        <h2 class="text-3xl font-bold text-white md:text-4xl">Latest updates</h2>
+        <p class="mt-2 text-slate-300">New articles and resources, refreshed daily.</p>
+      </div>
+      <a href="/articles" class="hidden md:inline text-brand-accent underline">All articles →</a>
+    </div>
+    <div class="grid gap-6 md:grid-cols-3">
+      {latest.map((post) => (
+        <a href={`/articles/${post.slug}`} class="card block">
+          <div class="text-xs text-slate-500">{post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</div>
+          <h3 class="mt-2 text-xl font-semibold text-white group-hover:text-brand-accent">{post.data.title}</h3>
+          <p class="mt-2 text-slate-300 line-clamp-3">{post.data.description}</p>
+          <div class="mt-4 text-brand-accent text-sm">Read more →</div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- MAILCHIMP -->
+  <section class="mx-auto max-w-7xl px-5 pb-24">
+    <MailchimpForm />
+  </section>
+</BaseLayout>

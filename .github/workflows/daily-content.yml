@@ -1,0 +1,53 @@
+name: Daily Content Scaffold
+
+on:
+  schedule:
+    # 14:00 UTC daily — scaffolds a draft article file so you can fill it in later.
+    - cron: '0 14 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  scaffold:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate draft article
+        id: draft
+        run: |
+          DATE=$(date +%F)
+          SLUG="draft-$DATE"
+          FILE="src/content/articles/${SLUG}.md"
+          if [ -f "$FILE" ]; then
+            echo "already-exists=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          cat > "$FILE" <<EOF
+          ---
+          title: "Draft $DATE"
+          description: "Draft placeholder — replace with the day's tip, review, or update."
+          pubDate: $DATE
+          draft: true
+          tags: ["draft"]
+          ---
+
+          Draft article scaffolded on $DATE. Edit this file (or delete it) before the next build.
+          EOF
+          echo "file=$FILE" >> $GITHUB_OUTPUT
+          echo "slug=$SLUG" >> $GITHUB_OUTPUT
+
+      - name: Open pull request
+        if: steps.draft.outputs.file != ''
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "content: scaffold draft article ${{ steps.draft.outputs.slug }}"
+          branch: "content/${{ steps.draft.outputs.slug }}"
+          title: "Daily draft: ${{ steps.draft.outputs.slug }}"
+          body: |
+            Scaffolded draft article. Fill in the content, flip `draft: false`, and merge.
+          labels: content, daily
+          add-paths: src/content/articles/*.md

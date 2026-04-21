@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const effective = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+<BaseLayout
+  title="Affiliate Disclosure — Web Guy Nick LLC"
+  description="How Web Guy Nick LLC uses affiliate links, including Amazon Associates (tag: webguynick-20) and hosting referrals via link.me/webguynick."
+>
+  <article class="mx-auto max-w-3xl px-5 pt-16 pb-24 prose-custom">
+    <h1 class="text-4xl font-extrabold text-white md:text-5xl">Affiliate Disclosure</h1>
+    <p><strong>Effective date:</strong> {effective}</p>
+
+    <p>
+      Web Guy Nick LLC participates in affiliate programs, including:
+    </p>
+    <ul>
+      <li><strong>Amazon Associates.</strong> As an Amazon Associate we earn from qualifying purchases. Our affiliate tag is <code>webguynick-20</code>.</li>
+      <li><strong>Hosting referrals</strong> via <a href="https://link.me/webguynick">link.me/webguynick</a> and related programs with hosting vendors we review on this Site.</li>
+    </ul>
+
+    <p>
+      When you click an affiliate link on this Site and complete a purchase or sign-up, Web Guy Nick LLC
+      may receive a commission. <strong>This is at no additional cost to you.</strong> The price you pay, and
+      any promotional pricing you qualify for, is unchanged by the use of an affiliate link.
+    </p>
+
+    <p>
+      We only recommend products and services we believe provide real value to small businesses.
+      Affiliate compensation does not determine our reviews or rankings — but we believe transparency
+      matters, which is why we clearly mark affiliate outbound links with <code>rel="nofollow sponsored"</code>
+      and publish this page.
+    </p>
+
+    <p>
+      Questions about this disclosure? Email <a href="mailto:info@webguynick.com">info@webguynick.com</a>.
+    </p>
+  </article>
+</BaseLayout>

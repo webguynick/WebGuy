@@ -1,0 +1,92 @@
+---
+// Cursor-following code rain for hero backgrounds.
+// Respects prefers-reduced-motion and pauses when offscreen.
+---
+<canvas id="code-rain" class="pointer-events-none absolute inset-0 h-full w-full" aria-hidden="true"></canvas>
+
+<script is:inline>
+  (function () {
+    const canvas = document.getElementById('code-rain');
+    if (!canvas) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return;
+
+    const ctx = canvas.getContext('2d');
+    const glyphs = '01<>/{}[]();=+-*&|$#@!?abcdefABCDEF'.split('');
+    const fontSize = 16;
+    let columns = 0;
+    let drops = [];
+    let targets = [];
+    let mouse = { x: 0.5, y: 0.5 };
+    let visible = true;
+    let rafId = 0;
+
+    function resize() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const { clientWidth: w, clientHeight: h } = canvas;
+      canvas.width = Math.max(1, Math.floor(w * dpr));
+      canvas.height = Math.max(1, Math.floor(h * dpr));
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      columns = Math.max(1, Math.floor(w / fontSize));
+      drops = new Array(columns).fill(0).map(() => Math.random() * -40);
+      targets = new Array(columns).fill(0).map(() => Math.random() * h);
+    }
+
+    function onMouse(e) {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = (e.clientX - rect.left) / rect.width;
+      mouse.y = (e.clientY - rect.top) / rect.height;
+    }
+
+    function draw() {
+      const { clientWidth: w, clientHeight: h } = canvas;
+      ctx.fillStyle = 'rgba(10, 10, 10, 0.18)';
+      ctx.fillRect(0, 0, w, h);
+      ctx.font = fontSize + 'px ui-monospace, Menlo, monospace';
+
+      const mx = mouse.x * w;
+      const my = mouse.y * h;
+
+      for (let i = 0; i < columns; i++) {
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
+        const dx = x - mx;
+        const dy = y - my;
+        const dist = Math.hypot(dx, dy);
+        const glow = Math.max(0, 1 - dist / 220);
+
+        // Warm the near-cursor glyphs to brand yellow; farther columns stay brand blue.
+        const r = Math.round(59 + (250 - 59) * glow);
+        const g = Math.round(130 + (204 - 130) * glow);
+        const b = Math.round(246 - (246 - 21) * glow);
+        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${0.55 + glow * 0.35})`;
+
+        const ch = glyphs[(Math.random() * glyphs.length) | 0];
+        ctx.fillText(ch, x, y);
+
+        drops[i] += 0.35 + glow * 0.9;
+        if (y > h && Math.random() > 0.975) drops[i] = Math.random() * -20;
+      }
+
+      if (visible) rafId = requestAnimationFrame(draw);
+    }
+
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        visible = e.isIntersecting;
+        if (visible) {
+          cancelAnimationFrame(rafId);
+          rafId = requestAnimationFrame(draw);
+        } else {
+          cancelAnimationFrame(rafId);
+        }
+      }
+    }, { threshold: 0 });
+
+    window.addEventListener('resize', resize, { passive: true });
+    window.addEventListener('pointermove', onMouse, { passive: true });
+    resize();
+    io.observe(canvas);
+    rafId = requestAnimationFrame(draw);
+  })();
+</script>

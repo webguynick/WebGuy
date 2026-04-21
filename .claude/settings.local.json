@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:webguynick.com)",
+      "Bash(npm --version)",
+      "Bash(git --version)",
+      "Bash(curl -sL --max-time 20 \"https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=crop/A85MG6R0OZt8gMy9/webguynick-logo-circle-AQEeBXrz7WIZzGWk.jpg\" -o /Users/webguynick/Desktop/WEBGUY/public/logo.jpg)",
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git -c user.email=info@webguynick.com -c user.name=\"Web Guy Nick\" commit -q -m \"chore: initial scaffold of webguynick.com\")"
+    ]
+  }
+}

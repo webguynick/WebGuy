@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('articles', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+<BaseLayout
+  title="Articles & Updates — Web Guy Nick"
+  description="Small-business web tips, performance deep-dives, and platform updates from Web Guy Nick LLC."
+>
+  <section class="mx-auto max-w-7xl px-5 pt-16 pb-10">
+    <h1 class="text-4xl font-extrabold text-white md:text-5xl">Articles & Updates</h1>
+    <p class="mt-4 max-w-2xl text-lg text-slate-300">Updated daily. New tips, hosting news, and honest platform reviews for small businesses.</p>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-5 pb-24">
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {posts.map((post) => (
+        <a href={`/articles/${post.slug}`} class="card block">
+          <div class="text-xs text-slate-500">
+            {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+          </div>
+          <h2 class="mt-2 text-xl font-semibold text-white">{post.data.title}</h2>
+          <p class="mt-2 text-slate-300 line-clamp-3">{post.data.description}</p>
+          {post.data.tags.length > 0 && (
+            <div class="mt-4 flex flex-wrap gap-2 text-xs">
+              {post.data.tags.map((t) => (
+                <span class="rounded-full border border-white/10 px-2 py-0.5 text-slate-400">{t}</span>
+              ))}
+            </div>
+          )}
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

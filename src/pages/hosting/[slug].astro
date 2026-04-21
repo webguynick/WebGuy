@@ -1,0 +1,48 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('hosting');
+  return entries.map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+<BaseLayout
+  title={`${entry.data.name} Review — Web Guy Nick`}
+  description={entry.data.bestFor}
+  type="article"
+>
+  <article class="mx-auto max-w-3xl px-5 pt-16 pb-24">
+    <a href="/hosting" class="text-sm text-brand-accent underline">← All hosting reviews</a>
+    <h1 class="mt-4 text-4xl font-extrabold text-white md:text-5xl">{entry.data.name}</h1>
+    <div class="mt-2 text-slate-400 text-sm">{entry.data.vendor} · from {entry.data.priceFrom} · rated {entry.data.rating.toFixed(1)}/5</div>
+
+    <a href={entry.data.url} rel="nofollow sponsored" class="btn-primary mt-6">Visit {entry.data.vendor} →</a>
+
+    <div class="prose-custom mt-10">
+      <Content />
+    </div>
+
+    <div class="mt-10 grid gap-6 md:grid-cols-2">
+      <div class="card">
+        <div class="text-sm font-semibold text-brand-accent">Pros</div>
+        <ul class="mt-2 space-y-1 text-slate-200">
+          {entry.data.pros.map((p) => <li>✓ {p}</li>)}
+        </ul>
+      </div>
+      <div class="card">
+        <div class="text-sm font-semibold text-brand-accent">Cons</div>
+        <ul class="mt-2 space-y-1 text-slate-200">
+          {entry.data.cons.map((c) => <li>– {c}</li>)}
+        </ul>
+      </div>
+    </div>
+
+    <p class="mt-10 text-xs text-slate-500">
+      Affiliate disclosure: this page contains affiliate links. If you sign up through them, I may earn a commission at no extra cost to you. See the <a class="underline" href="/disclosure">full disclosure</a>.
+    </p>
+  </article>
+</BaseLayout>
