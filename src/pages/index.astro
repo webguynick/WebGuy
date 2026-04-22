@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CodeRain from '../components/CodeRain.astro';
+import LiveScoreboard from '../components/LiveScoreboard.astro';
 import MailchimpForm from '../components/MailchimpForm.astro';
 import { getCollection } from 'astro:content';
 
@@ -40,6 +41,16 @@ const latest = (await getCollection('articles', ({ data }) => !data.draft))
           <div>📱 Mobile-first</div>
           <div>🔁 Updated daily</div>
         </div>
+      </div>
+
+      <div class="relative mt-14 max-w-3xl">
+        <div class="mb-3 flex items-baseline justify-between">
+          <div class="text-xs font-semibold uppercase tracking-wide text-slate-400">
+            Live Lighthouse score, this site
+          </div>
+          <a href="/work" class="text-xs text-brand-accent underline">See client results →</a>
+        </div>
+        <LiveScoreboard />
       </div>
     </div>
   </section>

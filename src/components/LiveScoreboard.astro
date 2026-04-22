@@ -1,0 +1,88 @@
+---
+// Live Lighthouse scoreboard. Fetches /lighthouse.json (committed nightly by CI)
+// and animates conic-gradient rings. Pure vanilla, no deps. Hides if file missing.
+---
+<div id="lh-scoreboard" class="grid grid-cols-2 gap-4 sm:grid-cols-4" data-lh-scoreboard>
+  <template id="lh-tile-template">
+    <div class="card !p-4 flex flex-col items-center text-center">
+      <div class="lh-ring relative h-20 w-20" style="--score:0;--hue:200">
+        <div class="lh-ring-bg absolute inset-0 rounded-full"></div>
+        <div class="lh-ring-fg absolute inset-0 rounded-full"></div>
+        <div class="lh-ring-inner absolute inset-2 rounded-full bg-brand-black flex items-center justify-center">
+          <span class="lh-value text-xl font-bold text-white tabular-nums">0</span>
+        </div>
+      </div>
+      <div class="lh-label mt-3 text-xs font-medium uppercase tracking-wide text-slate-400"></div>
+    </div>
+  </template>
+  <noscript>
+    <div class="col-span-full text-sm text-slate-400">Live Lighthouse scores load with JavaScript.</div>
+  </noscript>
+</div>
+
+<style>
+  .lh-ring-bg {
+    background: conic-gradient(rgba(255,255,255,0.08) 0deg 360deg);
+  }
+  .lh-ring-fg {
+    background: conic-gradient(
+      hsl(var(--hue) 90% 60%) 0deg calc(var(--score) * 3.6deg),
+      transparent calc(var(--score) * 3.6deg) 360deg
+    );
+    transition: background 700ms ease-out;
+  }
+</style>
+
+<script is:inline>
+  (async function () {
+    const root = document.querySelector('[data-lh-scoreboard]');
+    if (!root) return;
+    const tpl = document.getElementById('lh-tile-template');
+    let data;
+    try {
+      const res = await fetch('/lighthouse.json', { cache: 'no-store' });
+      if (!res.ok) throw new Error('no data');
+      data = await res.json();
+    } catch (e) {
+      root.style.display = 'none';
+      return;
+    }
+    const tiles = [
+      { key: 'performance', label: 'Performance' },
+      { key: 'accessibility', label: 'Accessibility' },
+      { key: 'bestPractices', label: 'Best Practices' },
+      { key: 'seo', label: 'SEO' },
+    ];
+    tiles.forEach(({ key, label }, i) => {
+      const node = tpl.content.firstElementChild.cloneNode(true);
+      node.querySelector('.lh-label').textContent = label;
+      const score = Math.max(0, Math.min(100, Number(data?.scores?.[key] ?? 0)));
+      const ring = node.querySelector('.lh-ring');
+      const valueEl = node.querySelector('.lh-value');
+      // hue: red 0, yellow 50, green 130
+      const hue = score >= 90 ? 130 : score >= 50 ? 40 : 0;
+      ring.style.setProperty('--hue', String(hue));
+      root.appendChild(node);
+      // Animate from 0 → score on intersection
+      const animate = () => {
+        const start = performance.now();
+        const dur = 900;
+        const tick = (t) => {
+          const p = Math.min(1, (t - start) / dur);
+          const eased = 1 - Math.pow(1 - p, 3);
+          const v = Math.round(score * eased);
+          ring.style.setProperty('--score', String(v));
+          valueEl.textContent = String(v);
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      };
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) { animate(); io.disconnect(); }
+        }
+      });
+      io.observe(node);
+    });
+  })();
+</script>

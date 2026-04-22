@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BeforeAfter from '../components/BeforeAfter.astro';
+import MailchimpForm from '../components/MailchimpForm.astro';
+---
+<BaseLayout
+  title="Case Studies | Web Guy Nick"
+  description="Real before and after numbers from small business websites Web Guy Nick LLC has built and tuned. Performance, conversion, and SEO results."
+  breadcrumbs={[
+    { name: 'Home', url: '/' },
+    { name: 'Work', url: '/work' },
+  ]}
+>
+  <section class="mx-auto max-w-7xl px-5 pt-16 pb-4">
+    <h1 class="text-4xl font-extrabold text-white md:text-5xl">Case studies</h1>
+    <p class="mt-4 max-w-2xl text-lg text-slate-300">
+      Real small business sites. Real numbers. Names anonymized where requested. Scroll to see the before and after for each engagement.
+    </p>
+  </section>
+
+  <BeforeAfter
+    client="Local plumbing company"
+    title="A Wix site nobody could find, replaced and ranked"
+    metrics={[
+      { label: 'Largest Contentful Paint', before: '4.8 s', after: '1.1 s' },
+      { label: 'Monthly organic visitors', before: '210', after: '1,640' },
+      { label: 'Lead form conversions / mo', before: '6', after: '47' },
+      { label: 'Lighthouse performance score', before: '38', after: '99' },
+    ]}
+  />
+
+  <BeforeAfter
+    client="Two-location salon"
+    title="From a $300/mo platform to a $3/mo static site, faster and prettier"
+    metrics={[
+      { label: 'Time to First Byte', before: '1.4 s', after: '0.09 s' },
+      { label: 'Monthly hosting cost', before: '$312', after: '$3' },
+      { label: 'Page weight (homepage)', before: '4.2 MB', after: '142 KB' },
+      { label: 'Online bookings / mo', before: '88', after: '171' },
+    ]}
+  />
+
+  <BeforeAfter
+    client="Solo attorney practice"
+    title="An AI intake bot that answered after-hours calls"
+    metrics={[
+      { label: 'After-hours leads captured', before: '0', after: '23 / mo' },
+      { label: 'Voicemail-only calls', before: '42 %', after: '6 %' },
+      { label: 'Average response time', before: '14 hr', after: '2 min' },
+      { label: 'New consultations booked', before: '11 / mo', after: '29 / mo' },
+    ]}
+  />
+
+  <section class="mx-auto max-w-5xl px-5 py-16">
+    <div class="card text-center">
+      <h2 class="text-2xl font-bold text-white">Want numbers like this for your site?</h2>
+      <p class="mt-3 text-slate-300">Free 20-minute audit, no pressure. We talk through your goals and where the easy wins are.</p>
+      <a href="/contact" class="btn-primary mt-6 inline-flex">Book a free audit</a>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-5 pb-24">
+    <MailchimpForm />
+  </section>
+</BaseLayout>
