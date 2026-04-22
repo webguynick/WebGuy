@@ -4,9 +4,10 @@ import MailchimpForm from '../components/MailchimpForm.astro';
 
 const services = [
   {
+    group: 'Build & Ship',
     title: 'New Website Build',
     priceFrom: 'from $1,500',
-    blurb: 'A complete, conversion-led small-business site, design, copy polish, launch, and 30 days of post-launch support.',
+    blurb: 'A complete, conversion-led small-business site. Design, copy polish, launch, and 30 days of post-launch support.',
     bullets: [
       'Up to 5 pages, mobile-first',
       'Built on a modern static stack (Astro / 11ty)',
@@ -16,6 +17,19 @@ const services = [
     ],
   },
   {
+    group: 'Build & Ship',
+    title: 'E-commerce Starter',
+    priceFrom: 'from $2,500',
+    blurb: 'A lean online store for small businesses. Shopify or a Stripe powered static store, set up correctly from day one.',
+    bullets: [
+      'Up to 25 products loaded and photographed',
+      'Stripe or Shopify checkout, tax + shipping configured',
+      'Abandoned cart email wired to Mailchimp or Klaviyo',
+      'Order confirmation and review request flows',
+    ],
+  },
+  {
+    group: 'Optimize',
     title: 'Performance Tune-Up',
     priceFrom: 'from $500',
     blurb: 'Keep your existing site. Strip the bloat, fix the Core Web Vitals, and actually show up on page one.',
@@ -27,9 +41,82 @@ const services = [
     ],
   },
   {
+    group: 'Optimize',
+    title: 'Accessibility & ADA Audit',
+    priceFrom: 'from $400',
+    blurb: 'WCAG 2.2 AA audit and remediation. Protects against drive-by ADA lawsuits and opens your site to ~20% more customers.',
+    bullets: [
+      'Automated + manual WCAG 2.2 AA scan',
+      'Keyboard and screen reader test pass',
+      'Remediation plan with severity ratings',
+      'Implementation of critical fixes included',
+    ],
+  },
+  {
+    group: 'AI',
+    title: 'AI Chatbot Setup',
+    priceFrom: 'from $499',
+    blurb: 'A Claude or OpenAI chatbot trained on your site, FAQs, and services. Answers customer questions, captures leads, hands off to you.',
+    bullets: [
+      'Trained only on your content (no hallucinations)',
+      '24/7 lead capture with SMS or email handoff',
+      'Conversation transcripts emailed weekly',
+      'Flat fee setup, you keep the API key and the data',
+    ],
+  },
+  {
+    group: 'AI',
+    title: 'AI Voice Agent Setup',
+    priceFrom: 'from $899',
+    blurb: 'An AI that answers your phones after hours or on overflow. Books jobs, captures leads, compliant call recording disclosures included.',
+    bullets: [
+      'Custom prompt and greeting in your brand voice',
+      'Calendar booking + SMS handoff to the owner',
+      'Two-party consent disclosures built in',
+      'Monthly platform fee typically $80 to $250',
+    ],
+  },
+  {
+    group: 'AI',
+    title: 'AI Content & SEO Sprint',
+    priceFrom: 'from $1,200',
+    blurb: 'A 30-day sprint to stand up a content engine using AI the right way. You keep the system, we get it running.',
+    bullets: [
+      '12 article outlines targeted to your customers',
+      '4 published articles with on-page SEO',
+      'Schema, internal linking, and image optimization',
+      'Voice-memo to draft workflow your team can run',
+    ],
+  },
+  {
+    group: 'Grow',
+    title: 'Google Business Profile Optimization',
+    priceFrom: 'from $350',
+    blurb: 'Fix your Google Business Profile. Most small businesses leave 30 to 50% of local visibility on the table.',
+    bullets: [
+      'Full profile audit and category fix',
+      'Service list, attributes, and photos optimized',
+      'Posting cadence set up with templates',
+      'Review request automation wired to your CRM',
+    ],
+  },
+  {
+    group: 'Grow',
+    title: 'SEO & Content (Monthly)',
+    priceFrom: 'from $750/mo',
+    blurb: 'Technical SEO, keyword strategy, and publish-ready articles written for your customers, not for search engines.',
+    bullets: [
+      'Technical SEO audit',
+      'Monthly long-form article (1,000+ words)',
+      'Google Business Profile upkeep',
+      'Local citations cleanup',
+    ],
+  },
+  {
+    group: 'Maintain',
     title: 'Digital Concierge (Monthly)',
     priceFrom: 'from $149/mo',
-    blurb: 'Ongoing care, security patches, backups, content changes, and a quarterly growth review. Predictable, cancel anytime.',
+    blurb: 'Ongoing care. Security patches, backups, content changes, and a quarterly growth review. Predictable, cancel anytime.',
     bullets: [
       'Security patches + uptime monitoring',
       'Daily off-site backups',
@@ -37,22 +124,16 @@ const services = [
       'Quarterly SEO & speed report',
     ],
   },
-  {
-    title: 'SEO & Content',
-    priceFrom: 'from $750/mo',
-    blurb: 'Technical SEO, keyword strategy, and one publish-ready article per month written for your customers.',
-    bullets: [
-      'Technical SEO audit',
-      'Monthly long-form article (1,000+ words)',
-      'Google Business Profile optimization',
-      'Local citations cleanup',
-    ],
-  },
 ];
+
+const groupOrder = ['Build & Ship', 'Optimize', 'AI', 'Grow', 'Maintain'];
+const servicesByGroup = groupOrder
+  .map((g) => ({ group: g, items: services.filter((s) => s.group === g) }))
+  .filter((g) => g.items.length);
 ---
 <BaseLayout
   title="Services | Web Guy Nick"
-  description="Small-business web design, performance tune-ups, monthly maintenance, and SEO from Web Guy Nick LLC."
+  description="Small-business web design, e-commerce, AI chatbots and voice agents, accessibility audits, SEO, Google Business Profile, and monthly maintenance from Web Guy Nick LLC."
 >
   <section class="mx-auto max-w-7xl px-5 pt-16 pb-10">
     <h1 class="text-4xl font-extrabold text-white md:text-5xl">Services</h1>
@@ -61,24 +142,32 @@ const services = [
     </p>
   </section>
 
-  <section class="mx-auto max-w-7xl px-5 pb-20">
-    <div class="grid gap-6 md:grid-cols-2">
-      {services.map((s) => (
-        <div class="card flex flex-col">
-          <div class="flex items-baseline justify-between gap-3">
-            <h2 class="text-2xl font-semibold text-white">{s.title}</h2>
-            <span class="text-sm font-semibold text-brand-accent whitespace-nowrap">{s.priceFrom}</span>
-          </div>
-          <p class="mt-3 text-slate-300">{s.blurb}</p>
-          <ul class="mt-4 space-y-2 text-sm text-slate-300">
-            {s.bullets.map((b) => (
-              <li class="flex gap-2"><span class="text-brand-accent">✓</span><span>{b}</span></li>
-            ))}
-          </ul>
-          <a href="/contact" class="btn-primary mt-6 self-start">Start this</a>
+  <section class="mx-auto max-w-7xl px-5 pb-20 space-y-14">
+    {servicesByGroup.map(({ group, items }) => (
+      <div>
+        <div class="mb-6 flex items-baseline gap-3">
+          <h2 class="text-2xl font-bold text-white">{group}</h2>
+          <span class="text-sm text-slate-500">{items.length} {items.length === 1 ? 'offering' : 'offerings'}</span>
         </div>
-      ))}
-    </div>
+        <div class="grid gap-6 md:grid-cols-2">
+          {items.map((s) => (
+            <div class="card flex flex-col">
+              <div class="flex items-baseline justify-between gap-3">
+                <h3 class="text-2xl font-semibold text-white">{s.title}</h3>
+                <span class="text-sm font-semibold text-brand-accent whitespace-nowrap">{s.priceFrom}</span>
+              </div>
+              <p class="mt-3 text-slate-300">{s.blurb}</p>
+              <ul class="mt-4 space-y-2 text-sm text-slate-300">
+                {s.bullets.map((b) => (
+                  <li class="flex gap-2"><span class="text-brand-accent">✓</span><span>{b}</span></li>
+                ))}
+              </ul>
+              <a href="/contact" class="btn-primary mt-6 self-start">Start this</a>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
   </section>
 
   <section class="mx-auto max-w-7xl px-5 pb-24">

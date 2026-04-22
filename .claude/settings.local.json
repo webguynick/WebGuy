@@ -33,7 +33,13 @@
       "Bash(xargs kill *)",
       "Bash(disown)",
       "Read(//private/tmp/**)",
-      "Bash(git -c user.email=info@webguynick.com -c user.name=\"Web Guy Nick\" commit -q -m \"content: swap accent to blue, add SiteGround + Hostinger, remove em-dashes, expand structured data\")"
+      "Bash(git -c user.email=info@webguynick.com -c user.name=\"Web Guy Nick\" commit -q -m \"content: swap accent to blue, add SiteGround + Hostinger, remove em-dashes, expand structured data\")",
+      "Bash(curl -s -o /dev/null -w \"/: %{http_code}\\\\n\" http://localhost:4321/)",
+      "Bash(curl -s -o /dev/null -w \"/services: %{http_code}\\\\n\" http://localhost:4321/services)",
+      "Bash(curl -s -o /dev/null -w \"/articles: %{http_code}\\\\n\" http://localhost:4321/articles)",
+      "Bash(curl -s -o /dev/null -w \"/articles/ai-chatbots-for-small-business: %{http_code}\\\\n\" http://localhost:4321/articles/ai-chatbots-for-small-business)",
+      "Bash(curl -s -o /dev/null -w \"/articles/ai-voice-agents-answering-phones: %{http_code}\\\\n\" http://localhost:4321/articles/ai-voice-agents-answering-phones)",
+      "Bash(git -c user.email=info@webguynick.com -c user.name=\"Web Guy Nick\" commit -q -m \"content: add 4 AI articles and 6 new services \\(e-commerce, accessibility, AI chatbot/voice/content, GBP\\)\")"
     ]
   }
 }
