@@ -11,10 +11,34 @@ const { entry } = Astro.props;
 const { Content } = await entry.render();
 ---
 <BaseLayout
-  title={`${entry.data.name} Review — Web Guy Nick`}
+  title={`${entry.data.name} Review | Web Guy Nick`}
   description={entry.data.bestFor}
   type="article"
+  breadcrumbs={[
+    { name: 'Home', url: '/' },
+    { name: 'Hosting', url: '/hosting' },
+    { name: entry.data.name, url: `/hosting/${entry.slug}` },
+  ]}
 >
+  <script type="application/ld+json" is:inline set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Review',
+    itemReviewed: {
+      '@type': 'Service',
+      name: entry.data.name,
+      provider: { '@type': 'Organization', name: entry.data.vendor },
+    },
+    reviewRating: {
+      '@type': 'Rating',
+      ratingValue: entry.data.rating,
+      bestRating: 5,
+      worstRating: 0,
+    },
+    author: { '@type': 'Organization', name: 'Web Guy Nick LLC' },
+    datePublished: entry.data.pubDate.toISOString().slice(0, 10),
+    reviewBody: entry.data.bestFor,
+  })} />
+
   <article class="mx-auto max-w-3xl px-5 pt-16 pb-24">
     <a href="/hosting" class="text-sm text-brand-accent underline">← All hosting reviews</a>
     <h1 class="mt-4 text-4xl font-extrabold text-white md:text-5xl">{entry.data.name}</h1>
@@ -36,7 +60,7 @@ const { Content } = await entry.render();
       <div class="card">
         <div class="text-sm font-semibold text-brand-accent">Cons</div>
         <ul class="mt-2 space-y-1 text-slate-200">
-          {entry.data.cons.map((c) => <li>– {c}</li>)}
+          {entry.data.cons.map((c) => <li>- {c}</li>)}
         </ul>
       </div>
     </div>

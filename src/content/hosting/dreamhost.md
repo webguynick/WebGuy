@@ -8,7 +8,7 @@ priceFrom: "$2.95/mo"
 pros:
   - "Strong WordPress tooling"
   - "Free SSL and daily backups on most plans"
-  - "Honest pricing — no surprise renewal spikes"
+  - "Honest pricing, no surprise renewal spikes"
 cons:
   - "Shared tier can be slow under load"
   - "No Windows hosting"

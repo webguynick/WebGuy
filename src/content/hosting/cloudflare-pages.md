@@ -12,7 +12,7 @@ pros:
   - "Built-in DDoS and WAF protection"
 cons:
   - "Functions have a request duration cap"
-  - "Best for static and Jamstack — not a drop-in for legacy PHP"
+  - "Best for static and Jamstack, not a drop-in for legacy PHP"
 bestFor: "Static sites, portfolios, marketing sites, and small-business brochure sites."
 pubDate: 2026-04-21
 ---
@@ -25,7 +25,7 @@ About 10 minutes. Push to GitHub, connect the repo, done.
 
 ## Real-world numbers
 
-A static Astro site deployed to Pages lands at **Time-to-First-Byte under 100ms** in most US regions. Compare that to shared hosting, which I regularly measure at 800–1500ms.
+A static Astro site deployed to Pages lands at **Time-to-First-Byte under 100ms** in most US regions. Compare that to shared hosting, which I regularly measure at 800-1500ms.
 
 ## Verdict
 

@@ -55,11 +55,11 @@
         const dist = Math.hypot(dx, dy);
         const glow = Math.max(0, 1 - dist / 220);
 
-        // Warm the near-cursor glyphs to brand yellow; farther columns stay brand blue.
-        const r = Math.round(59 + (250 - 59) * glow);
-        const g = Math.round(130 + (204 - 130) * glow);
-        const b = Math.round(246 - (246 - 21) * glow);
-        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${0.55 + glow * 0.35})`;
+        // Far columns: deep brand blue. Near cursor: bright cyan-blue glow.
+        const r = Math.round(59 + (96 - 59) * glow);
+        const g = Math.round(130 + (211 - 130) * glow);
+        const b = Math.round(246 + (238 - 246) * glow);
+        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${0.55 + glow * 0.4})`;
 
         const ch = glyphs[(Math.random() * glyphs.length) | 0];
         ctx.fillText(ch, x, y);

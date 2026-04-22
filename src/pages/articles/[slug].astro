@@ -12,10 +12,32 @@ const { entry } = Astro.props;
 const { Content } = await entry.render();
 ---
 <BaseLayout
-  title={`${entry.data.title} — Web Guy Nick`}
+  title={`${entry.data.title} | Web Guy Nick`}
   description={entry.data.description}
   type="article"
+  breadcrumbs={[
+    { name: 'Home', url: '/' },
+    { name: 'Articles', url: '/articles' },
+    { name: entry.data.title, url: `/articles/${entry.slug}` },
+  ]}
 >
+  <script type="application/ld+json" is:inline set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: entry.data.title,
+    description: entry.data.description,
+    datePublished: entry.data.pubDate.toISOString(),
+    dateModified: (entry.data.updatedDate ?? entry.data.pubDate).toISOString(),
+    author: { '@type': 'Organization', name: 'Web Guy Nick LLC', url: 'https://webguynick.com' },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Web Guy Nick LLC',
+      logo: { '@type': 'ImageObject', url: 'https://webguynick.com/logo.jpg' },
+    },
+    mainEntityOfPage: `https://webguynick.com/articles/${entry.slug}`,
+    keywords: entry.data.tags.join(', '),
+  })} />
+
   <article class="mx-auto max-w-3xl px-5 pt-16 pb-16">
     <a href="/articles" class="text-sm text-brand-accent underline">← All articles</a>
     <h1 class="mt-4 text-4xl font-extrabold text-white md:text-5xl">{entry.data.title}</h1>

@@ -1,0 +1,15 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "web",
+      "runtimeExecutable": "/bin/bash",
+      "runtimeArgs": [
+        "-lc",
+        "export PATH=\"$HOME/.local/node-preview/bin:$PATH\" && cd /Users/webguynick/Desktop/WEBGUY && exec npm run dev -- --host --port ${PORT:-4321}"
+      ],
+      "port": 4321,
+      "autoPort": true
+    }
+  ]
+}

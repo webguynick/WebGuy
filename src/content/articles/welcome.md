@@ -7,7 +7,7 @@ tags: ["announcements"]
 
 We rebuilt webguynick.com from the ground up.
 
-The old site looked nice, but it was slow to update and heavy. The new one is a static, fast, mobile-first Astro site that scores 90+ on Core Web Vitals out of the gate — and it gets updated **every day** via an automated GitHub Actions pipeline that runs an SEO audit, a Lighthouse pass, and scaffolds any new articles.
+The old site looked nice, but it was slow to update and heavy. The new one is a static, fast, mobile-first Astro site that scores 90+ on Core Web Vitals out of the gate, and it gets updated **every day** via an automated GitHub Actions pipeline that runs an SEO audit, a Lighthouse pass, and scaffolds any new articles.
 
 ## What's new
 

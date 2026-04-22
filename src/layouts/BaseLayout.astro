@@ -10,18 +10,31 @@ interface Props {
   canonical?: string;
   type?: string;
   noindex?: boolean;
+  breadcrumbs?: Array<{ name: string; url: string }>;
 }
 
 const {
-  title = 'Web Guy Nick — Websites That Sell for Small Businesses',
+  title = 'Web Guy Nick | Websites That Sell for Small Businesses',
   description = 'Conversion-led websites, hosting, SEO, and ongoing maintenance for small businesses. Built by Web Guy Nick LLC.',
   image = '/logo.jpg',
   canonical = Astro.url.href,
   type = 'website',
   noindex = false,
+  breadcrumbs,
 } = Astro.props;
 
 const siteName = 'Web Guy Nick LLC';
+
+const breadcrumbJsonLd = breadcrumbs && breadcrumbs.length > 1 ? {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbs.map((b, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: b.name,
+    item: new URL(b.url, Astro.site).toString(),
+  })),
+} : null;
 ---
 <!doctype html>
 <html lang="en">
@@ -54,14 +67,20 @@ const siteName = 'Web Guy Nick LLC';
 
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
-      '@type': 'LocalBusiness',
+      '@type': 'ProfessionalService',
+      '@id': 'https://webguynick.com/#business',
       name: 'Web Guy Nick LLC',
+      alternateName: 'Web Guy Nick',
       image: new URL('/logo.jpg', Astro.site).toString(),
+      logo: new URL('/logo.jpg', Astro.site).toString(),
       url: 'https://webguynick.com',
       telephone: '+1-951-536-0028',
       email: 'info@webguynick.com',
-      areaServed: 'US',
+      description: 'Small business website design, performance engineering, hosting, and ongoing maintenance.',
+      areaServed: { '@type': 'Country', name: 'United States' },
       priceRange: '$$',
+      founder: { '@type': 'Person', name: 'Nick' },
+      knowsAbout: ['Web Design', 'Web Performance', 'SEO', 'WordPress', 'Astro', 'Small Business Websites'],
       sameAs: [
         'https://www.facebook.com/webguynickllc',
         'https://www.instagram.com/webguynickllc',
@@ -70,6 +89,9 @@ const siteName = 'Web Guy Nick LLC';
         'https://www.tiktok.com/@webguynick1',
       ],
     })} />
+    {breadcrumbJsonLd && (
+      <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
+    )}
   </head>
   <body class="min-h-screen flex flex-col">
     <Header />

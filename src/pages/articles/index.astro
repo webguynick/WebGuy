@@ -6,7 +6,7 @@ const posts = (await getCollection('articles', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 <BaseLayout
-  title="Articles & Updates — Web Guy Nick"
+  title="Articles & Updates | Web Guy Nick"
   description="Small-business web tips, performance deep-dives, and platform updates from Web Guy Nick LLC."
 >
   <section class="mx-auto max-w-7xl px-5 pt-16 pb-10">

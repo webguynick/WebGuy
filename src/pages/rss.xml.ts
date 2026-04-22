@@ -7,7 +7,7 @@ export async function GET(context: APIContext) {
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
   return rss({
-    title: 'Web Guy Nick — Articles & Updates',
+    title: 'Web Guy Nick, Articles & Updates',
     description: 'Small-business web tips, performance deep-dives, and platform updates from Web Guy Nick LLC.',
     site: context.site!,
     items: posts.map((post) => ({
