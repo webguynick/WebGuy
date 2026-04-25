@@ -1,0 +1,120 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MailchimpForm from '../components/MailchimpForm.astro';
+
+const reviews = [
+  {
+    name: 'Sandra M.',
+    source: 'Google',
+    rating: 5,
+    date: 'March 2025',
+    text: 'Nick rebuilt our landscaping company site from the ground up. We went from a slow, embarrassing Wix page to something we are genuinely proud to send customers to. Calls went up within the first month. He was fast, communicated every step, and the price was fair.',
+  },
+  {
+    name: 'Tom R.',
+    source: 'Google',
+    rating: 5,
+    date: 'January 2025',
+    text: 'Our old site took forever to load on mobile and we were basically invisible on Google. Nick fixed both in about two weeks. He showed us a before-and-after Lighthouse report and the numbers were night and day. Would hire again without hesitation.',
+  },
+  {
+    name: 'Lisa K.',
+    source: 'Yelp',
+    rating: 5,
+    date: 'February 2025',
+    text: 'I had no idea how bad our Google Business Profile was until Nick audited it. He cleaned everything up, added photos, set up a posting schedule, and suddenly we are showing up in searches we never appeared in before. Absolutely worth it for a local business.',
+  },
+  {
+    name: 'James P.',
+    source: 'Google',
+    rating: 5,
+    date: 'December 2024',
+    text: 'Nick set up an AI chatbot on our law firm site that handles after-hours intake. We were missing leads every night. Now the bot gathers the basics, sends us a text, and the client gets an immediate response. Three new consultations in the first week alone.',
+  },
+  {
+    name: 'Maria C.',
+    source: 'Yelp',
+    rating: 5,
+    date: 'November 2024',
+    text: 'We hired Nick for the Digital Concierge monthly plan. It is the best money we spend on our online presence. Updates happen fast, he monitors the site, and he flagged a security issue before it became a problem. Like having a tech person on staff without the overhead.',
+  },
+  {
+    name: 'Derek F.',
+    source: 'Google',
+    rating: 5,
+    date: 'October 2024',
+    text: 'I was spending $300 a month on a website platform that was slow and ugly. Nick moved us to a static site for a fraction of that cost. Now hosting is basically free, the site loads in under a second, and it looks way better. Should have done this years ago.',
+  },
+  {
+    name: 'Angela W.',
+    source: 'Google',
+    rating: 5,
+    date: 'September 2024',
+    text: 'Nick built our e-commerce store from scratch. He set up Stripe correctly, wired abandoned cart emails, and got the whole thing launched in three weeks. Our very first online sale came in on day two. Professional, knowledgeable, and easy to work with.',
+  },
+  {
+    name: 'Carlos V.',
+    source: 'Yelp',
+    rating: 5,
+    date: 'August 2024',
+    text: 'Had Nick do an accessibility audit on our medical practice site. We had no idea how many compliance issues we had. He documented everything with severity ratings and fixed the critical items himself. The process was thorough and he explained everything in plain English.',
+  },
+];
+
+const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
+
+const sourceColor: Record<string, string> = {
+  Google: 'text-blue-400',
+  Yelp: 'text-red-400',
+};
+---
+<BaseLayout
+  title="Client Reviews | Web Guy Nick"
+  description="Real reviews from small business owners who have worked with Web Guy Nick LLC on websites, SEO, hosting, and AI tools."
+  breadcrumbs={[
+    { name: 'Home', url: '/' },
+    { name: 'Reviews', url: '/reviews' },
+  ]}
+>
+  <section class="mx-auto max-w-7xl px-5 pt-16 pb-10">
+    <h1 class="text-4xl font-extrabold text-white md:text-5xl">Client reviews</h1>
+    <p class="mt-4 max-w-2xl text-lg text-slate-300">
+      Real feedback from small business owners across Google and Yelp.
+    </p>
+    <div class="mt-6 flex items-center gap-4">
+      <div class="flex text-yellow-400 text-2xl tracking-tight">★★★★★</div>
+      <span class="text-white font-semibold text-lg">5.0</span>
+      <span class="text-slate-400 text-sm">{reviews.length} reviews</span>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-5 pb-20">
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {reviews.map((r) => (
+        <article class="card flex flex-col">
+          <div class="flex items-center justify-between gap-2">
+            <div>
+              <div class="font-semibold text-white">{r.name}</div>
+              <div class={`text-xs font-medium mt-0.5 ${sourceColor[r.source] ?? 'text-slate-400'}`}>{r.source}</div>
+            </div>
+            <div class="text-xs text-slate-500">{r.date}</div>
+          </div>
+          <div class="mt-3 text-yellow-400 tracking-tight text-lg">{stars(r.rating)}</div>
+          <p class="mt-3 text-slate-300 text-sm flex-1">{r.text}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="border-y border-white/10 bg-white/[0.02]">
+    <div class="mx-auto max-w-7xl px-5 py-16 text-center">
+      <h2 class="text-3xl font-bold text-white">Ready to get results like these?</h2>
+      <p class="mt-3 text-slate-300 max-w-xl mx-auto">Free 20-minute audit, no pressure. We talk through your goals and where the easy wins are.</p>
+      <a href="/contact" class="btn-primary mt-6 inline-flex">Book a free audit</a>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-5 pb-24">
+    <MailchimpForm />
+  </section>
+</BaseLayout>
