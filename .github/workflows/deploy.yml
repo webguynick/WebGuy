@@ -1,4 +1,4 @@
-name: Build & Deploy to GitHub Pages
+name: Build & Deploy to Hostinger
 
 on:
   push:
@@ -7,39 +7,47 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
+  group: hostinger-deploy
   cancel-in-progress: true
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
+
       - run: npm ci
+
       - name: Build Astro site
         env:
           PUBLIC_MAILCHIMP_ACTION: ${{ secrets.MAILCHIMP_ACTION }}
           PUBLIC_MAILCHIMP_BOT_NAME: ${{ secrets.MAILCHIMP_BOT_NAME }}
           PUBLIC_CONTACT_ENDPOINT: ${{ secrets.CONTACT_ENDPOINT }}
         run: npm run build
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Deploy to Hostinger via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          local-dir: ./dist/
+          protocol: ${{ vars.FTP_PROTOCOL || 'ftps' }}
+          port: ${{ vars.FTP_PORT || 21 }}
+          # Don't delete files we didn't build (e.g. anything you uploaded manually)
+          dangerous-clean-slate: false
+          # Skip files that haven't changed for fast deploys
+          state-name: .ftp-deploy-sync-state.json
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/.DS_Store
