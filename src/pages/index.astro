@@ -1,411 +1,143 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CodeRain from '../components/CodeRain.astro';
 import MailchimpForm from '../components/MailchimpForm.astro';
 import { getCollection } from 'astro:content';
 
 const latest = (await getCollection('articles', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
-
-const reviews = [
-  {
-    name: 'Septimber J.',
-    source: 'Trustpilot',
-    quote: "Working with Nick has been awesome! He's super helpful and always has great ideas for my website.",
-  },
-  {
-    name: 'Dianne C.',
-    source: 'Trustpilot',
-    quote: 'I had Nick take over my site and he did an awesome job. Now I have a site I am proud to have my clients see.',
-  },
-  {
-    name: 'Verified Customer',
-    source: 'Trustpilot',
-    quote: 'Nick is super helpful, very honest, and provides invaluable experience. Excellent service.',
-  },
-];
-
-const services = [
-  {
-    num: '01',
-    label: 'Design',
-    title: 'Conversion-led design',
-    body: 'User-flow mapping and design psychology that drives visitors to the contact button — not the about page.',
-    href: '/services',
-  },
-  {
-    num: '02',
-    label: 'Build',
-    title: 'Performance engineering',
-    body: 'Modern static stacks, real CDNs, page-weight budgets. 90+ Core Web Vitals is the floor, not the goal.',
-    href: '/services',
-  },
-  {
-    num: '03',
-    label: 'Maintain',
-    title: 'Digital concierge',
-    body: 'Security patches, content updates, speed tune-ups. Your site gets measurably better every month.',
-    href: '/services',
-  },
-];
-
-const process = [
-  { step: '01', title: 'Free 20-min audit', body: 'We dig into your site, traffic, and goals — no pitch deck, no commitment.' },
-  { step: '02', title: 'Scoped proposal', body: 'A flat, honest quote with timeline and exact deliverables. No surprise add-ons.' },
-  { step: '03', title: 'Build & launch', body: 'Two-week sprints with live previews. You see progress every Friday.' },
-  { step: '04', title: 'Ongoing care', body: 'Monthly updates, security, performance, and SEO so the site keeps earning.' },
-];
-
-const faqs = [
-  {
-    q: 'How much does a website cost?',
-    a: 'Most small business sites land between $1,500 and $4,500 — flat rate, no per-page nonsense. Hosting and maintenance are separate and start at $39/mo. You get a fixed quote upfront.',
-  },
-  {
-    q: 'How long does it take?',
-    a: 'A focused 5–7 page small business site typically launches in 2–3 weeks. Larger builds with custom features run 4–6 weeks. We work in weekly sprints with previews.',
-  },
-  {
-    q: 'Do you work with WordPress, or something else?',
-    a: 'Both. WordPress with the Divi theme when you need a CMS your team can update. A modern static stack (Astro) when speed and SEO are the priority. I’ll recommend the right tool for your situation.',
-  },
-  {
-    q: 'Can you fix or take over my existing site?',
-    a: 'Yes — site rescues are a big part of what I do. Slow load times, broken plugins, security patches, design refreshes. We start with a free audit and you decide from there.',
-  },
-  {
-    q: 'Where are you located?',
-    a: 'Web Guy Nick LLC is based in Rialto, California, serving small businesses across the US. Everything is handled remotely with weekly check-ins.',
-  },
-];
-
-const faqJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: faqs.map((f) => ({
-    '@type': 'Question',
-    name: f.q,
-    acceptedAnswer: { '@type': 'Answer', text: f.a },
-  })),
-};
 ---
 <BaseLayout
-  title="Web Guy Nick — Websites That Sell for Small Businesses"
-  description="Conversion-led websites, fast hosting, SEO, and ongoing maintenance for small businesses. Built and maintained by Web Guy Nick LLC in Rialto, CA."
+  title="Web Guy Nick, Websites That Sell for Small Businesses"
+  description="Conversion-led websites, fast hosting, SEO, and ongoing maintenance for small businesses. Built by Web Guy Nick LLC."
 >
-  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} slot="head" />
-
   <!-- HERO -->
   <section class="relative overflow-hidden">
-    <!-- Layered glow background -->
-    <div class="pointer-events-none absolute inset-0">
-      <div class="absolute -top-40 -left-40 h-[36rem] w-[36rem] rounded-full bg-brand-accent/20 blur-3xl"></div>
-      <div class="absolute top-20 right-[-10rem] h-[30rem] w-[30rem] rounded-full bg-brand-blue/30 blur-3xl"></div>
-      <div class="absolute bottom-[-12rem] left-1/3 h-[28rem] w-[28rem] rounded-full bg-brand-yellow/10 blur-3xl"></div>
-    </div>
-    <div
-      class="pointer-events-none absolute inset-0 opacity-[0.07]"
-      style="background-image: linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px); background-size: 56px 56px; mask-image: radial-gradient(ellipse at center, black 40%, transparent 75%);"
-    ></div>
+    <CodeRain />
+    <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-brand-black/60 via-brand-black/80 to-brand-black"></div>
 
-    <div class="relative mx-auto max-w-7xl px-5 pt-24 pb-24 md:pt-36 md:pb-36">
-      <div class="max-w-4xl">
-        <a href="/reviews" class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium text-slate-200 backdrop-blur hover:border-brand-accent/60 hover:text-white transition">
-          <span class="text-yellow-400">★★★★★</span>
-          <span>5.0 across verified reviews</span>
-          <span class="text-slate-500">·</span>
-          <span class="text-brand-accent">Read reviews →</span>
-        </a>
-        <h1 class="mt-6 text-5xl font-extrabold leading-[1.05] tracking-tight text-white md:text-7xl">
-          Websites that
-          <span class="relative inline-block">
-            <span class="relative z-10 bg-gradient-to-r from-brand-accent via-brand-blue-bright to-brand-accent bg-clip-text text-transparent">actually sell</span>
-            <span class="absolute inset-x-0 bottom-1 -z-0 h-3 bg-brand-accent/20 blur-sm"></span>
-          </span>
-          <br class="hidden md:block" />
-          for small businesses.
+    <div class="relative mx-auto max-w-7xl px-5 pt-20 pb-28 md:pt-32 md:pb-40">
+      <div class="max-w-3xl">
+        <span class="inline-flex items-center gap-2 rounded-full border border-brand-accent/40 bg-brand-accent/10 px-3 py-1 text-xs font-medium text-brand-accent">
+          <span class="h-2 w-2 rounded-full bg-brand-accent"></span>
+          Web Guy Nick LLC
+        </span>
+        <h1 class="mt-6 text-4xl font-extrabold leading-tight tracking-tight text-white md:text-6xl">
+          Your website should be your <span class="text-brand-accent">best salesperson.</span>
         </h1>
-        <p class="mt-7 max-w-2xl text-lg leading-relaxed text-slate-300 md:text-xl">
-          Fast, secure, conversion-focused websites built by a real human you can call. No page-builder bloat. No renewal-price games. Just sites that bring you customers.
+        <p class="mt-6 max-w-2xl text-lg text-slate-300 md:text-xl">
+          Straightforward websites for small businesses, fast, secure, and built to convert.
+          No page-builder bloat. No renewal-price games. Just sites that sell.
         </p>
-        <div class="mt-9 flex flex-wrap items-center gap-3">
-          <a href="/contact" class="btn-primary text-base">Get a free 20-min audit</a>
-          <a href="/services" class="btn-ghost text-base">See services</a>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="/contact" class="btn-primary">Get a Free Quote</a>
+          <a href="/services" class="btn-ghost">See Services</a>
         </div>
+        <div class="mt-10 flex flex-wrap items-center gap-6 text-sm text-slate-400">
+          <div>⚡ LCP under 1.5s</div>
+          <div>🔒 Secure by default</div>
+          <div>📱 Mobile-first</div>
+          <div>🔁 Updated daily</div>
+        </div>
+      </div>
 
-        <!-- Proof bar -->
-        <dl class="mt-14 grid max-w-3xl grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-4">
-          <div>
-            <dt class="text-3xl font-bold text-white">10+</dt>
-            <dd class="mt-1 text-sm text-slate-400">Years building</dd>
-          </div>
-          <div>
-            <dt class="text-3xl font-bold text-white">&lt;1.5s</dt>
-            <dd class="mt-1 text-sm text-slate-400">Average LCP</dd>
-          </div>
-          <div>
-            <dt class="text-3xl font-bold text-white">90+</dt>
-            <dd class="mt-1 text-sm text-slate-400">Core Web Vitals</dd>
-          </div>
-          <div>
-            <dt class="text-3xl font-bold text-white">5.0★</dt>
-            <dd class="mt-1 text-sm text-slate-400">Verified reviews</dd>
-          </div>
-        </dl>
-      </div>
-    </div>
-  </section>
-
-  <!-- LOGO / TRUST STRIP -->
-  <section class="border-y border-white/10 bg-white/[0.02]">
-    <div class="mx-auto max-w-7xl px-5 py-8">
-      <div class="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-sm text-slate-400">
-        <span class="font-semibold uppercase tracking-wider text-slate-500 text-xs">Trusted &amp; built on</span>
-        <span class="font-semibold text-slate-200">WordPress</span>
-        <span class="text-slate-700">·</span>
-        <span class="font-semibold text-slate-200">Divi</span>
-        <span class="text-slate-700">·</span>
-        <span class="font-semibold text-slate-200">Astro</span>
-        <span class="text-slate-700">·</span>
-        <span class="font-semibold text-slate-200">Cloudflare</span>
-        <span class="text-slate-700">·</span>
-        <span class="font-semibold text-slate-200">Google Analytics</span>
-        <span class="text-slate-700">·</span>
-        <span class="font-semibold text-slate-200">SiteGround</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- PROBLEM → SOLUTION -->
-  <section class="mx-auto max-w-7xl px-5 py-24">
-    <div class="grid gap-12 md:grid-cols-2 md:gap-16">
-      <div>
-        <div class="text-xs font-semibold uppercase tracking-wider text-brand-accent">Why most small business sites fail</div>
-        <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl leading-tight">
-          A pretty website isn't a salesperson.
-        </h2>
-        <p class="mt-4 text-slate-300 leading-relaxed">
-          Most small business sites are built by template cousins or page-builder agencies. They look fine on a phone and convert like a brochure left on a shelf. Slow loads, fuzzy CTAs, broken forms, and a "where do I click?" feeling that sends customers straight to your competitor.
-        </p>
-        <ul class="mt-6 space-y-3 text-slate-300">
-          <li class="flex items-start gap-3"><span class="mt-1 text-red-400">✕</span><span>Loads in 6+ seconds and leaks 40% of mobile visitors before the hero finishes.</span></li>
-          <li class="flex items-start gap-3"><span class="mt-1 text-red-400">✕</span><span>Five buttons fighting for attention on the homepage.</span></li>
-          <li class="flex items-start gap-3"><span class="mt-1 text-red-400">✕</span><span>Hosting that triples in price at renewal — and is somehow still slow.</span></li>
-        </ul>
-      </div>
-      <div class="md:pl-8 md:border-l md:border-white/10">
-        <div class="text-xs font-semibold uppercase tracking-wider text-brand-accent">What I do differently</div>
-        <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl leading-tight">
-          One clear path. One clear win.
-        </h2>
-        <p class="mt-4 text-slate-300 leading-relaxed">
-          Every page is engineered around a single visitor decision: book, buy, or call. No vanity sliders. No carousels nobody clicks. Real performance, real tracking, and a CTA that's impossible to miss.
-        </p>
-        <ul class="mt-6 space-y-3 text-slate-300">
-          <li class="flex items-start gap-3"><span class="mt-1 text-emerald-400">✓</span><span>Sub-1.5s LCP on mobile, even on slower connections.</span></li>
-          <li class="flex items-start gap-3"><span class="mt-1 text-emerald-400">✓</span><span>One primary CTA per page, tested and tracked.</span></li>
-          <li class="flex items-start gap-3"><span class="mt-1 text-emerald-400">✓</span><span>Honest hosting recommendations and locked-in pricing.</span></li>
-        </ul>
-      </div>
     </div>
   </section>
 
   <!-- SERVICES -->
-  <section class="border-y border-white/10 bg-white/[0.02]">
-    <div class="mx-auto max-w-7xl px-5 py-24">
-      <div class="mb-12 max-w-2xl">
-        <div class="text-xs font-semibold uppercase tracking-wider text-brand-accent">Services</div>
-        <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl">Three focused offerings.</h2>
-        <p class="mt-3 text-slate-300">No fluff. No upsells you don't need. Pick one or all three.</p>
-      </div>
-      <div class="grid gap-6 md:grid-cols-3">
-        {services.map((s) => (
-          <a href={s.href} class="card group block">
-            <div class="flex items-center justify-between">
-              <span class="text-brand-accent text-sm font-semibold tracking-wider">{s.num} · {s.label}</span>
-              <span class="text-slate-500 group-hover:text-brand-accent transition">→</span>
-            </div>
-            <h3 class="mt-4 text-2xl font-semibold text-white">{s.title}</h3>
-            <p class="mt-3 text-slate-300 leading-relaxed">{s.body}</p>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- REVIEWS -->
-  <section class="mx-auto max-w-7xl px-5 py-24">
-    <div class="mb-12 flex flex-wrap items-end justify-between gap-4">
-      <div class="max-w-2xl">
-        <div class="text-xs font-semibold uppercase tracking-wider text-brand-accent">Real client reviews</div>
-        <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl">Don't take my word for it.</h2>
-        <p class="mt-3 text-slate-300">Verified Trustpilot reviews from actual small business owners.</p>
-      </div>
-      <a href="/reviews" class="text-brand-accent underline underline-offset-4">Read all reviews →</a>
+  <section class="mx-auto max-w-7xl px-5 py-20">
+    <div class="mb-10 max-w-2xl">
+      <h2 class="text-3xl font-bold text-white md:text-4xl">What I do for small businesses</h2>
+      <p class="mt-3 text-slate-300">Three focused offerings. No fluff, no upsells you don't need.</p>
     </div>
     <div class="grid gap-6 md:grid-cols-3">
-      {reviews.map((r) => (
-        <figure class="card flex flex-col">
-          <div class="text-yellow-400 text-lg">★★★★★</div>
-          <blockquote class="mt-3 text-slate-200 leading-relaxed flex-1">"{r.quote}"</blockquote>
-          <figcaption class="mt-5 flex items-center justify-between text-sm">
-            <span class="font-semibold text-white">{r.name}</span>
-            <span class="text-emerald-400">{r.source} · verified</span>
-          </figcaption>
-        </figure>
-      ))}
+      <div class="card">
+        <div class="text-brand-accent text-sm font-semibold">01, Design</div>
+        <h3 class="mt-2 text-xl font-semibold text-white">Conversion-Led Design</h3>
+        <p class="mt-3 text-slate-300">Design psychology and user-flow mapping that directs visitors to your contact button, not your about page.</p>
+      </div>
+      <div class="card">
+        <div class="text-brand-accent text-sm font-semibold">02, Build</div>
+        <h3 class="mt-2 text-xl font-semibold text-white">Performance Engineering</h3>
+        <p class="mt-3 text-slate-300">Modern static sites, real CDNs, and an obsessive page-weight budget. 90+ on Core Web Vitals is the floor.</p>
+      </div>
+      <div class="card">
+        <div class="text-brand-accent text-sm font-semibold">03, Maintain</div>
+        <h3 class="mt-2 text-xl font-semibold text-white">Digital Concierge</h3>
+        <p class="mt-3 text-slate-300">Ongoing security patches, speed tune-ups, and content updates. Your site gets better every month.</p>
+      </div>
     </div>
   </section>
 
-  <!-- PROCESS TIMELINE -->
+  <!-- HOSTING CTA -->
   <section class="border-y border-white/10 bg-white/[0.02]">
-    <div class="mx-auto max-w-7xl px-5 py-24">
-      <div class="mb-12 max-w-2xl">
-        <div class="text-xs font-semibold uppercase tracking-wider text-brand-accent">Process</div>
-        <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl">From first call to live in weeks, not months.</h2>
-        <p class="mt-3 text-slate-300">No mystery. No "we'll be in touch." A clear, predictable process you can plan around.</p>
+    <div class="mx-auto max-w-7xl px-5 py-16 md:grid md:grid-cols-2 md:gap-10">
+      <div>
+        <h2 class="text-3xl font-bold text-white md:text-4xl">Hosting, without the trap doors</h2>
+        <p class="mt-3 text-slate-300">
+          I maintain an honest, regularly-updated comparison of the hosts I'd actually put my own clients on, 
+          with discounted signup links at <a href="https://link.me/webguynick" class="text-brand-accent underline">link.me/webguynick</a>.
+        </p>
+        <div class="mt-6 flex gap-3">
+          <a href="/hosting" class="btn-primary">Compare Hosting</a>
+          <a href="https://link.me/webguynick" class="btn-ghost">Get Discounts</a>
+        </div>
       </div>
-      <ol class="grid gap-6 md:grid-cols-4">
-        {process.map((p, i) => (
-          <li class="relative">
-            <div class="flex items-center gap-3">
-              <span class="flex h-10 w-10 items-center justify-center rounded-full border border-brand-accent/40 bg-brand-accent/10 text-sm font-bold text-brand-accent">{p.step}</span>
-              {i < process.length - 1 && (
-                <span class="hidden md:block flex-1 h-px bg-gradient-to-r from-brand-accent/40 to-transparent"></span>
-              )}
-            </div>
-            <h3 class="mt-4 text-lg font-semibold text-white">{p.title}</h3>
-            <p class="mt-2 text-slate-300 text-sm leading-relaxed">{p.body}</p>
-          </li>
-        ))}
-      </ol>
+      <div class="mt-10 md:mt-0">
+        <div class="card">
+          <div class="text-sm font-semibold text-brand-accent">Top pick right now</div>
+          <h3 class="mt-2 text-xl font-semibold text-white">Cloudflare Pages</h3>
+          <p class="mt-2 text-slate-300">Free tier, global edge, unmetered bandwidth. TTFB under 100ms in most of the US.</p>
+          <a href="/hosting" class="mt-4 inline-block text-brand-accent underline">See full review →</a>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- HOSTING -->
-  <section class="mx-auto max-w-7xl px-5 py-24">
-    <div class="grid gap-10 md:grid-cols-2 md:gap-16 items-center">
-      <div>
-        <div class="text-xs font-semibold uppercase tracking-wider text-brand-accent">Hosting</div>
-        <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl">Hosting without the trap doors.</h2>
-        <p class="mt-4 text-slate-300 leading-relaxed">
-          I keep an honest, regularly-updated comparison of the only hosts I'd put my own clients on — with discounted signup links and the renewal pricing nobody else shows you upfront.
-        </p>
-        <div class="mt-7 flex flex-wrap gap-3">
-          <a href="/hosting" class="btn-primary">Compare hosting</a>
-          <a href="https://link.me/webguynick" rel="nofollow sponsored" class="btn-ghost">Get discounts</a>
-        </div>
-      </div>
-      <div class="relative">
-        <div class="card relative overflow-hidden">
-          <div class="absolute -top-10 -right-10 h-40 w-40 rounded-full bg-brand-accent/20 blur-2xl"></div>
-          <div class="relative">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-semibold uppercase tracking-wider text-brand-accent">Top pick right now</span>
-              <span class="text-yellow-400">★★★★★</span>
-            </div>
-            <h3 class="mt-3 text-2xl font-semibold text-white">Cloudflare Pages</h3>
-            <p class="mt-2 text-slate-300 leading-relaxed">Free tier. Global edge. Unmetered bandwidth. TTFB under 100ms in most of the US, and it scales for free.</p>
-            <dl class="mt-5 grid grid-cols-3 gap-4 border-t border-white/10 pt-5 text-sm">
-              <div>
-                <dt class="text-slate-500">Starts at</dt>
-                <dd class="font-semibold text-white">$0/mo</dd>
-              </div>
-              <div>
-                <dt class="text-slate-500">TTFB</dt>
-                <dd class="font-semibold text-white">&lt;100ms</dd>
-              </div>
-              <div>
-                <dt class="text-slate-500">Uptime</dt>
-                <dd class="font-semibold text-white">99.99%</dd>
-              </div>
-            </dl>
-            <a href="/hosting" class="mt-5 inline-block text-brand-accent underline underline-offset-4">Read full review →</a>
-          </div>
-        </div>
+  <!-- FEATURED GEAR -->
+  <section class="mx-auto max-w-7xl px-5 py-20">
+    <div class="mb-10 max-w-2xl">
+      <h2 class="text-3xl font-bold text-white md:text-4xl">Gear I actually use</h2>
+      <p class="mt-3 text-slate-300">The setup behind the work. Only things I'd put in front of a client.</p>
+    </div>
+    <div class="grid gap-6 md:grid-cols-3">
+      <div class="card flex flex-col">
+        <div class="text-brand-accent text-sm font-semibold">Chair</div>
+        <h3 class="mt-2 text-xl font-semibold text-white">Secretlab Titan Evo</h3>
+        <p class="mt-3 text-slate-300 flex-1">Solid steel frame, adjustable lumbar, and a build quality that holds up through back-to-back client calls. Worth every dollar over a budget chair.</p>
+        <a
+          href="https://secretlabus.refr.cc/default/u/nicholast8?s=sp&t=cp"
+          rel="nofollow sponsored"
+          class="btn-primary mt-5 self-start text-sm px-4 py-2"
+        >Shop Secretlab →</a>
       </div>
     </div>
   </section>
 
   <!-- LATEST ARTICLES -->
-  <section class="border-y border-white/10 bg-white/[0.02]">
-    <div class="mx-auto max-w-7xl px-5 py-24">
-      <div class="mb-12 flex flex-wrap items-end justify-between gap-4">
-        <div class="max-w-2xl">
-          <div class="text-xs font-semibold uppercase tracking-wider text-brand-accent">From the blog</div>
-          <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl">Practical guides for small business owners.</h2>
-          <p class="mt-3 text-slate-300">New articles every week. AI tools, web speed, hosting, and the stuff that actually moves the needle.</p>
-        </div>
-        <a href="/articles" class="text-brand-accent underline underline-offset-4">All articles →</a>
-      </div>
-      <div class="grid gap-6 md:grid-cols-3">
-        {latest.map((post) => (
-          <a href={`/articles/${post.slug}`} class="card group block flex flex-col">
-            <div class="text-xs text-slate-500">
-              {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
-              {post.data.tags?.[0] && (
-                <>
-                  <span class="mx-2 text-slate-700">·</span>
-                  <span class="text-brand-accent">{post.data.tags[0]}</span>
-                </>
-              )}
-            </div>
-            <h3 class="mt-3 text-xl font-semibold text-white group-hover:text-brand-accent transition">{post.data.title}</h3>
-            <p class="mt-3 text-slate-300 leading-relaxed line-clamp-3 flex-1">{post.data.description}</p>
-            <div class="mt-5 text-brand-accent text-sm">Read article →</div>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="mx-auto max-w-7xl px-5 py-24">
-    <div class="grid gap-12 md:grid-cols-3 md:gap-16">
-      <div>
-        <div class="text-xs font-semibold uppercase tracking-wider text-brand-accent">FAQ</div>
-        <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl leading-tight">Common questions, straight answers.</h2>
-        <p class="mt-4 text-slate-300">Don't see yours? <a href="/contact" class="text-brand-accent underline underline-offset-4">Just ask</a>.</p>
-      </div>
-      <div class="md:col-span-2 divide-y divide-white/10 border-t border-white/10">
-        {faqs.map((f) => (
-          <details class="group py-5">
-            <summary class="flex cursor-pointer items-center justify-between gap-4 list-none">
-              <span class="text-lg font-semibold text-white">{f.q}</span>
-              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/15 text-slate-300 group-open:bg-brand-accent group-open:border-brand-accent group-open:text-white transition">
-                <span class="group-open:hidden">+</span>
-                <span class="hidden group-open:inline">−</span>
-              </span>
-            </summary>
-            <p class="mt-3 text-slate-300 leading-relaxed">{f.a}</p>
-          </details>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- BIG CTA -->
-  <section class="relative overflow-hidden border-y border-white/10">
-    <div class="pointer-events-none absolute inset-0">
-      <div class="absolute -top-20 left-1/4 h-80 w-80 rounded-full bg-brand-accent/30 blur-3xl"></div>
-      <div class="absolute -bottom-32 right-1/4 h-96 w-96 rounded-full bg-brand-blue/30 blur-3xl"></div>
-    </div>
-    <div class="relative mx-auto max-w-5xl px-5 py-24 text-center">
-      <h2 class="text-4xl font-extrabold leading-tight tracking-tight text-white md:text-5xl">
-        Ready for a website that <span class="text-brand-accent">earns its keep?</span>
-      </h2>
-      <p class="mt-5 text-lg text-slate-300 max-w-2xl mx-auto">
-        Free 20-minute audit. We talk through your goals, find the easy wins, and you decide if we work together. No pressure, no decks.
-      </p>
-      <div class="mt-9 flex flex-wrap justify-center gap-3">
-        <a href="/contact" class="btn-primary text-base">Book a free audit</a>
-        <a href="tel:+19515360028" class="btn-ghost text-base">Call (951) 536-0028</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- NEWSLETTER -->
   <section class="mx-auto max-w-7xl px-5 py-20">
+    <div class="mb-10 flex items-end justify-between gap-4">
+      <div>
+        <h2 class="text-3xl font-bold text-white md:text-4xl">Latest updates</h2>
+        <p class="mt-2 text-slate-300">New articles and resources, refreshed daily.</p>
+      </div>
+      <a href="/articles" class="hidden md:inline text-brand-accent underline">All articles →</a>
+    </div>
+    <div class="grid gap-6 md:grid-cols-3">
+      {latest.map((post) => (
+        <a href={`/articles/${post.slug}`} class="card block">
+          <div class="text-xs text-slate-500">{post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</div>
+          <h3 class="mt-2 text-xl font-semibold text-white group-hover:text-brand-accent">{post.data.title}</h3>
+          <p class="mt-2 text-slate-300 line-clamp-3">{post.data.description}</p>
+          <div class="mt-4 text-brand-accent text-sm">Read more →</div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- MAILCHIMP -->
+  <section class="mx-auto max-w-7xl px-5 pb-24">
     <MailchimpForm />
   </section>
 </BaseLayout>
