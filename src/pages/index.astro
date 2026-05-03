@@ -1,11 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import MailchimpForm from '../components/MailchimpForm.astro';
+import MatrixRain from '../components/MatrixRain.astro';
 import { getCollection } from 'astro:content';
 
 const latest = (await getCollection('articles', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
+
+const hosts = (await getCollection('hosting'))
+  .sort((a, b) => b.data.rating - a.data.rating);
 
 const reviews = [
   {
@@ -28,24 +32,75 @@ const reviews = [
 const services = [
   {
     num: '01',
-    label: 'Design',
-    title: 'Conversion-led design',
-    body: 'User-flow mapping and design psychology that drives visitors to the contact button — not the about page.',
+    label: 'Build',
+    title: 'Custom website design & development',
+    body: 'Conversion-focused sites built on WordPress, Divi, or modern static stacks. Fast, secure, and tracked from day one.',
     href: '/services',
   },
   {
     num: '02',
-    label: 'Build',
-    title: 'Performance engineering',
-    body: 'Modern static stacks, real CDNs, page-weight budgets. 90+ Core Web Vitals is the floor, not the goal.',
-    href: '/services',
+    label: 'Manage',
+    title: 'Website maintenance & care plans',
+    body: 'Recurring monthly care: updates, backups, security, performance, content edits. Your site keeps earning while you run the business.',
+    href: '#care-plans',
   },
   {
     num: '03',
-    label: 'Maintain',
-    title: 'Digital concierge',
-    body: 'Security patches, content updates, speed tune-ups. Your site gets measurably better every month.',
+    label: 'Grow',
+    title: 'AI tools & local SEO for small business',
+    body: 'AI chatbots, content automation, Google Business Profile, schema, and review management. Practical AI that brings in customers.',
     href: '/services',
+  },
+];
+
+const carePlans = [
+  {
+    tier: 'Essentials',
+    price: 99,
+    tagline: 'Keep the site safe, fast, and online.',
+    description: 'For small business sites that are working — they just need a pro keeping watch.',
+    features: [
+      'Weekly WordPress core, theme & plugin updates',
+      'Daily off-site backups (30-day retention)',
+      'Malware scanning & uptime monitoring',
+      'Monthly performance & security report',
+      '30 min/mo of content edits',
+      'Email support, 24-hour response',
+    ],
+    cta: 'Start Essentials',
+  },
+  {
+    tier: 'Growth',
+    price: 299,
+    tagline: 'Maintenance + active SEO and conversion work.',
+    description: 'For owners who want their site to actively grow traffic and leads, not just stay online.',
+    featured: true,
+    features: [
+      'Everything in Essentials',
+      '2 hrs/mo of design & content updates',
+      'Local SEO + Google Business Profile management',
+      'Monthly Lighthouse + Core Web Vitals tune-up',
+      'Conversion tracking (GA4, Pixel, GTM)',
+      'On-page SEO for 1 new page or post / mo',
+      'Priority support, same-day response',
+    ],
+    cta: 'Start Growth',
+  },
+  {
+    tier: 'AI-Powered',
+    price: 599,
+    tagline: 'Done-for-you growth with AI working 24/7.',
+    description: 'For businesses ready to let AI handle leads, content, and customer service while they sleep.',
+    features: [
+      'Everything in Growth',
+      'AI chatbot trained on your business (24/7 lead capture)',
+      'AI-generated blog post + social repurposing / mo',
+      'Review request automation & reputation monitoring',
+      'AI voice agent for after-hours calls (add-on ready)',
+      'Quarterly strategy call + roadmap',
+      'White-glove support, 1-hour response',
+    ],
+    cta: 'Start AI-Powered',
   },
 ];
 
@@ -53,110 +108,140 @@ const process = [
   { step: '01', title: 'Free 20-min audit', body: 'We dig into your site, traffic, and goals — no pitch deck, no commitment.' },
   { step: '02', title: 'Scoped proposal', body: 'A flat, honest quote with timeline and exact deliverables. No surprise add-ons.' },
   { step: '03', title: 'Build & launch', body: 'Two-week sprints with live previews. You see progress every Friday.' },
-  { step: '04', title: 'Ongoing care', body: 'Monthly updates, security, performance, and SEO so the site keeps earning.' },
+  { step: '04', title: 'Ongoing care', body: 'Monthly care plan keeps your site fast, secure, and earning.' },
 ];
 
 const faqs = [
-  {
-    q: 'How much does a website cost?',
-    a: 'Most small business sites land between $1,500 and $4,500 — flat rate, no per-page nonsense. Hosting and maintenance are separate and start at $39/mo. You get a fixed quote upfront.',
-  },
-  {
-    q: 'How long does it take?',
-    a: 'A focused 5–7 page small business site typically launches in 2–3 weeks. Larger builds with custom features run 4–6 weeks. We work in weekly sprints with previews.',
-  },
-  {
-    q: 'Do you work with WordPress, or something else?',
-    a: 'Both. WordPress with the Divi theme when you need a CMS your team can update. A modern static stack (Astro) when speed and SEO are the priority. I’ll recommend the right tool for your situation.',
-  },
-  {
-    q: 'Can you fix or take over my existing site?',
-    a: 'Yes — site rescues are a big part of what I do. Slow load times, broken plugins, security patches, design refreshes. We start with a free audit and you decide from there.',
-  },
-  {
-    q: 'Where are you located?',
-    a: 'Web Guy Nick LLC is based in Rialto, California, serving small businesses across the US. Everything is handled remotely with weekly check-ins.',
-  },
+  { q: 'How much does a website cost?', a: 'Most small business sites land between $1,500 and $4,500 — flat rate, no per-page nonsense. Care plans start at $99/mo. You get a fixed quote upfront.' },
+  { q: "What's included in a care plan?", a: 'All plans cover updates, backups, security, and uptime monitoring. Higher tiers add SEO work, content edits, performance tuning, and AI tools like chatbots and content automation.' },
+  { q: 'Do I need a care plan if my site is already built?', a: 'Honestly, yes. WordPress, plugins, and SSL certs all need regular care to stay secure and fast. A care plan also gets you a real human to call when something breaks — at 2am, on a holiday, when a form stops working.' },
+  { q: 'How long does a new build take?', a: 'A focused 5–7 page small business site typically launches in 2–3 weeks. Larger builds with custom features or e-commerce run 4–6 weeks. Weekly sprints with previews.' },
+  { q: 'Do you work with WordPress, or something else?', a: "Both. WordPress with the Divi theme when you need a CMS your team can update. A modern static stack (Astro) when speed and SEO are the priority. I'll recommend the right tool for your situation." },
+  { q: 'Where are you located?', a: 'Web Guy Nick LLC is based in Rialto, California, serving small businesses across the US. Everything is handled remotely with weekly check-ins.' },
 ];
 
 const faqJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: faqs.map((f) => ({
-    '@type': 'Question',
-    name: f.q,
-    acceptedAnswer: { '@type': 'Answer', text: f.a },
-  })),
+  mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+
+const featuredSlugs = ['siteground', 'hostinger', 'cloudflare-pages'];
+const featuredHosts = featuredSlugs
+  .map((slug) => hosts.find((h) => h.slug === slug))
+  .filter(Boolean) as typeof hosts;
+
+const hostBadges: Record<string, { tag: string; color: string }> = {
+  siteground: { tag: 'Best for WordPress', color: 'emerald' },
+  hostinger: { tag: 'Best on a budget', color: 'yellow' },
+  'cloudflare-pages': { tag: 'Best for static / free', color: 'blue' },
 };
 ---
 <BaseLayout
-  title="Web Guy Nick — Websites That Sell for Small Businesses"
-  description="Conversion-led websites, fast hosting, SEO, and ongoing maintenance for small businesses. Built and maintained by Web Guy Nick LLC in Rialto, CA."
+  title="Web Guy Nick — Small Business Websites, Care Plans & AI Tools"
+  description="Custom websites, monthly care plans, and AI tools for small businesses. WordPress, SEO, hosting, and ongoing support from Web Guy Nick LLC in Rialto, CA."
 >
   <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} slot="head" />
 
   <!-- HERO -->
   <section class="relative overflow-hidden">
-    <!-- Layered glow background -->
+    <!-- Matrix rain background -->
+    <MatrixRain />
+    <!-- Layered glow background on top of matrix -->
     <div class="pointer-events-none absolute inset-0">
-      <div class="absolute -top-40 -left-40 h-[36rem] w-[36rem] rounded-full bg-brand-accent/20 blur-3xl"></div>
-      <div class="absolute top-20 right-[-10rem] h-[30rem] w-[30rem] rounded-full bg-brand-blue/30 blur-3xl"></div>
-      <div class="absolute bottom-[-12rem] left-1/3 h-[28rem] w-[28rem] rounded-full bg-brand-yellow/10 blur-3xl"></div>
+      <div class="absolute -top-40 -left-40 h-[36rem] w-[36rem] rounded-full bg-brand-accent/10 blur-3xl"></div>
+      <div class="absolute top-20 right-[-10rem] h-[30rem] w-[30rem] rounded-full bg-brand-blue/20 blur-3xl"></div>
     </div>
-    <div
-      class="pointer-events-none absolute inset-0 opacity-[0.07]"
-      style="background-image: linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px); background-size: 56px 56px; mask-image: radial-gradient(ellipse at center, black 40%, transparent 75%);"
-    ></div>
 
-    <div class="relative mx-auto max-w-7xl px-5 pt-24 pb-24 md:pt-36 md:pb-36">
-      <div class="max-w-4xl">
-        <a href="/reviews" class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium text-slate-200 backdrop-blur hover:border-brand-accent/60 hover:text-white transition">
-          <span class="text-yellow-400">★★★★★</span>
-          <span>5.0 across verified reviews</span>
-          <span class="text-slate-500">·</span>
-          <span class="text-brand-accent">Read reviews →</span>
-        </a>
-        <h1 class="mt-6 text-5xl font-extrabold leading-[1.05] tracking-tight text-white md:text-7xl">
-          Websites that
-          <span class="relative inline-block">
-            <span class="relative z-10 bg-gradient-to-r from-brand-accent via-brand-blue-bright to-brand-accent bg-clip-text text-transparent">actually sell</span>
-            <span class="absolute inset-x-0 bottom-1 -z-0 h-3 bg-brand-accent/20 blur-sm"></span>
-          </span>
-          <br class="hidden md:block" />
-          for small businesses.
-        </h1>
-        <p class="mt-7 max-w-2xl text-lg leading-relaxed text-slate-300 md:text-xl">
-          Fast, secure, conversion-focused websites built by a real human you can call. No page-builder bloat. No renewal-price games. Just sites that bring you customers.
-        </p>
-        <div class="mt-9 flex flex-wrap items-center gap-3">
-          <a href="/contact" class="btn-primary text-base">Get a free 20-min audit</a>
-          <a href="/services" class="btn-ghost text-base">See services</a>
+    <div class="relative mx-auto max-w-7xl px-5 pt-20 pb-24 md:pt-32 md:pb-32">
+      <div class="grid items-center gap-12 lg:grid-cols-[1.2fr_1fr]">
+        <div>
+          <div class="flex flex-wrap items-center gap-2">
+            <a href="/reviews" class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium text-slate-200 backdrop-blur hover:border-brand-accent/60 hover:text-white transition">
+              <span class="text-yellow-400">★★★★★</span>
+              <span>5.0 on Trustpilot</span>
+              <span class="text-brand-accent">→</span>
+            </a>
+            <span class="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-300">
+              <span class="relative flex h-2 w-2">
+                <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+              </span>
+              Booking new clients
+            </span>
+          </div>
+          <h1 class="mt-6 text-5xl font-extrabold leading-[1.05] tracking-tight text-white md:text-7xl">
+            Websites,
+            <span class="relative inline-block">
+              <span class="relative z-10 bg-gradient-to-r from-brand-accent via-brand-blue-bright to-brand-accent bg-clip-text text-transparent">care plans</span>
+            </span>,
+            <br class="hidden md:block" />
+            and AI tools for small business.
+          </h1>
+          <p class="mt-7 max-w-2xl text-lg leading-relaxed text-slate-300 md:text-xl">
+            One trusted partner for your custom website, ongoing maintenance, and the AI tools that bring in customers around the clock. Built and supported by a real human you can call.
+          </p>
+          <div class="mt-9 flex flex-wrap items-center gap-3">
+            <a href="/contact" class="btn-primary text-base">Get a free 20-min audit</a>
+            <a href="#care-plans" class="btn-ghost text-base">See care plans</a>
+          </div>
+          <dl class="mt-12 grid max-w-2xl grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-4">
+            <div><dt class="text-3xl font-bold text-white">10+</dt><dd class="mt-1 text-sm text-slate-400">Years building</dd></div>
+            <div><dt class="text-3xl font-bold text-white">&lt;1.5s</dt><dd class="mt-1 text-sm text-slate-400">Average LCP</dd></div>
+            <div><dt class="text-3xl font-bold text-white">90+</dt><dd class="mt-1 text-sm text-slate-400">Core Web Vitals</dd></div>
+            <div><dt class="text-3xl font-bold text-white">5.0★</dt><dd class="mt-1 text-sm text-slate-400">Verified reviews</dd></div>
+          </dl>
         </div>
 
-        <!-- Proof bar -->
-        <dl class="mt-14 grid max-w-3xl grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-4">
-          <div>
-            <dt class="text-3xl font-bold text-white">10+</dt>
-            <dd class="mt-1 text-sm text-slate-400">Years building</dd>
+        <!-- Hero visual: Lighthouse-style audit card -->
+        <div class="relative hidden lg:block">
+          <div class="absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br from-brand-accent/20 via-transparent to-brand-blue/20 blur-2xl"></div>
+          <div class="card relative overflow-hidden border-white/10 backdrop-blur-md bg-white/[0.04]">
+            <div class="flex items-center gap-2 border-b border-white/10 -mx-6 -mt-6 mb-4 px-4 py-3">
+              <span class="h-2.5 w-2.5 rounded-full bg-red-400/80"></span>
+              <span class="h-2.5 w-2.5 rounded-full bg-yellow-400/80"></span>
+              <span class="h-2.5 w-2.5 rounded-full bg-emerald-400/80"></span>
+              <span class="ml-3 truncate rounded-md bg-white/5 px-2 py-0.5 text-xs text-slate-400">your-site.com</span>
+            </div>
+            <div class="text-xs font-semibold uppercase tracking-wider text-slate-400">Lighthouse audit</div>
+            <h3 class="mt-1 text-xl font-semibold text-white">After Web Guy Nick</h3>
+            <div class="mt-5 grid grid-cols-4 gap-3">
+              {[
+                { label: 'Performance', value: 99 },
+                { label: 'Accessibility', value: 100 },
+                { label: 'Best Practices', value: 100 },
+                { label: 'SEO', value: 100 },
+              ].map((m) => (
+                <div class="text-center">
+                  <div
+                    class="relative mx-auto flex h-14 w-14 items-center justify-center rounded-full"
+                    style={`background: conic-gradient(rgb(34 197 94) ${m.value * 3.6}deg, rgba(255,255,255,0.08) 0);`}
+                  >
+                    <span class="flex h-11 w-11 items-center justify-center rounded-full bg-brand-bg text-sm font-bold text-emerald-400">{m.value}</span>
+                  </div>
+                  <div class="mt-2 text-[10px] text-slate-400">{m.label}</div>
+                </div>
+              ))}
+            </div>
+            <div class="mt-6 grid grid-cols-3 gap-3 border-t border-white/10 pt-4 text-center">
+              <div><div class="text-emerald-400 text-sm font-bold">0.9s</div><div class="text-[10px] text-slate-500">LCP</div></div>
+              <div><div class="text-emerald-400 text-sm font-bold">0.02</div><div class="text-[10px] text-slate-500">CLS</div></div>
+              <div><div class="text-emerald-400 text-sm font-bold">120ms</div><div class="text-[10px] text-slate-500">INP</div></div>
+            </div>
           </div>
-          <div>
-            <dt class="text-3xl font-bold text-white">&lt;1.5s</dt>
-            <dd class="mt-1 text-sm text-slate-400">Average LCP</dd>
+          <div class="absolute -bottom-6 -left-6 hidden xl:block">
+            <div class="card max-w-[16rem] border-white/10 backdrop-blur-md bg-white/[0.04]">
+              <div class="text-yellow-400 text-sm">★★★★★</div>
+              <p class="mt-1 text-xs text-slate-200 leading-relaxed">"Nick did a great job — now I have a site I'm proud to show clients."</p>
+              <div class="mt-2 text-[10px] text-emerald-400">Dianne C. · Trustpilot verified</div>
+            </div>
           </div>
-          <div>
-            <dt class="text-3xl font-bold text-white">90+</dt>
-            <dd class="mt-1 text-sm text-slate-400">Core Web Vitals</dd>
-          </div>
-          <div>
-            <dt class="text-3xl font-bold text-white">5.0★</dt>
-            <dd class="mt-1 text-sm text-slate-400">Verified reviews</dd>
-          </div>
-        </dl>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- LOGO / TRUST STRIP -->
+  <!-- TRUST STRIP -->
   <section class="border-y border-white/10 bg-white/[0.02]">
     <div class="mx-auto max-w-7xl px-5 py-8">
       <div class="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-sm text-slate-400">
@@ -172,7 +257,75 @@ const faqJsonLd = {
         <span class="font-semibold text-slate-200">Google Analytics</span>
         <span class="text-slate-700">·</span>
         <span class="font-semibold text-slate-200">SiteGround</span>
+        <span class="text-slate-700">·</span>
+        <span class="font-semibold text-slate-200">OpenAI</span>
       </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="mx-auto max-w-7xl px-5 py-24">
+    <div class="mb-12 max-w-2xl">
+      <div class="text-xs font-semibold uppercase tracking-wider text-brand-accent">What I do</div>
+      <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl">Build it. Maintain it. Grow it.</h2>
+      <p class="mt-3 text-slate-300">A full-stack partner for your online presence — not three different vendors who blame each other when something breaks.</p>
+    </div>
+    <div class="grid gap-6 md:grid-cols-3">
+      {services.map((s) => (
+        <a href={s.href} class="card group block">
+          <div class="flex items-center justify-between">
+            <span class="text-brand-accent text-sm font-semibold tracking-wider">{s.num} · {s.label}</span>
+            <span class="text-slate-500 group-hover:text-brand-accent transition">→</span>
+          </div>
+          <h3 class="mt-4 text-2xl font-semibold text-white">{s.title}</h3>
+          <p class="mt-3 text-slate-300 leading-relaxed">{s.body}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- CARE PLANS — passive income tier ladder -->
+  <section id="care-plans" class="border-y border-white/10 bg-white/[0.02]">
+    <div class="mx-auto max-w-7xl px-5 py-24">
+      <div class="mb-14 text-center max-w-3xl mx-auto">
+        <div class="text-xs font-semibold uppercase tracking-wider text-brand-accent">Care plans</div>
+        <h2 class="mt-3 text-3xl font-bold text-white md:text-5xl leading-tight">Your website, fully managed.</h2>
+        <p class="mt-4 text-lg text-slate-300">Most small business owners don't want to think about WordPress updates, SSL certificates, or whether their backups actually work. So I take care of all of it — and add the AI tools that bring in customers while you sleep.</p>
+      </div>
+      <div class="grid gap-6 md:grid-cols-3 items-stretch">
+        {carePlans.map((plan) => (
+          <article class={`relative flex flex-col rounded-2xl border p-8 transition ${
+            plan.featured
+              ? 'border-emerald-400/40 bg-gradient-to-b from-emerald-400/[0.07] to-white/[0.02] shadow-[0_0_60px_rgba(16,185,129,0.15)]'
+              : 'border-white/10 bg-white/[0.03] hover:border-white/20'
+          }`}>
+            {plan.featured && (
+              <span class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-emerald-400 px-3 py-0.5 text-xs font-bold text-slate-950">Most popular</span>
+            )}
+            <h3 class="text-2xl font-bold text-white">{plan.tier}</h3>
+            <p class="mt-1 text-sm text-slate-400">{plan.tagline}</p>
+            <div class="mt-6 flex items-baseline gap-1">
+              <span class="text-5xl font-extrabold text-white">${plan.price}</span>
+              <span class="text-slate-400 text-sm">/month</span>
+            </div>
+            <p class="mt-4 text-sm text-slate-300 leading-relaxed">{plan.description}</p>
+            <ul class="mt-6 space-y-2.5 text-sm flex-1">
+              {plan.features.map((f) => (
+                <li class="flex items-start gap-2.5">
+                  <svg class="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.7 5.3a1 1 0 0 1 0 1.4l-8 8a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.4L8 12.6l7.3-7.3a1 1 0 0 1 1.4 0z" clip-rule="evenodd"/></svg>
+                  <span class="text-slate-200">{f}</span>
+                </li>
+              ))}
+            </ul>
+            <a href={`/contact?plan=${plan.tier.toLowerCase()}`} class={`mt-7 inline-flex items-center justify-center rounded-md px-5 py-2.5 text-sm font-semibold transition ${
+              plan.featured
+                ? 'bg-emerald-400 text-slate-950 hover:bg-emerald-300'
+                : 'border border-white/15 bg-white/5 text-white hover:bg-white/10'
+            }`}>{plan.cta} →</a>
+          </article>
+        ))}
+      </div>
+      <p class="mt-8 text-center text-sm text-slate-400">All plans month-to-month. Cancel anytime. <a href="/contact" class="text-brand-accent underline underline-offset-4">Need something custom? Let's talk.</a></p>
     </div>
   </section>
 
@@ -181,205 +334,188 @@ const faqJsonLd = {
     <div class="grid gap-12 md:grid-cols-2 md:gap-16">
       <div>
         <div class="text-xs font-semibold uppercase tracking-wider text-brand-accent">Why most small business sites fail</div>
-        <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl leading-tight">
-          A pretty website isn't a salesperson.
-        </h2>
+        <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl leading-tight">A pretty website isn't a salesperson.</h2>
         <p class="mt-4 text-slate-300 leading-relaxed">
-          Most small business sites are built by template cousins or page-builder agencies. They look fine on a phone and convert like a brochure left on a shelf. Slow loads, fuzzy CTAs, broken forms, and a "where do I click?" feeling that sends customers straight to your competitor.
+          Most small business sites are built once, then forgotten. Plugins go stale, SSL certs expire, page speed crawls, and the form quietly stops sending leads. Six months later you're paying for a website that's actively losing you business.
         </p>
         <ul class="mt-6 space-y-3 text-slate-300">
           <li class="flex items-start gap-3"><span class="mt-1 text-red-400">✕</span><span>Loads in 6+ seconds and leaks 40% of mobile visitors before the hero finishes.</span></li>
-          <li class="flex items-start gap-3"><span class="mt-1 text-red-400">✕</span><span>Five buttons fighting for attention on the homepage.</span></li>
+          <li class="flex items-start gap-3"><span class="mt-1 text-red-400">✕</span><span>No one watching for security updates, broken forms, or downtime.</span></li>
           <li class="flex items-start gap-3"><span class="mt-1 text-red-400">✕</span><span>Hosting that triples in price at renewal — and is somehow still slow.</span></li>
         </ul>
       </div>
       <div class="md:pl-8 md:border-l md:border-white/10">
         <div class="text-xs font-semibold uppercase tracking-wider text-brand-accent">What I do differently</div>
-        <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl leading-tight">
-          One clear path. One clear win.
-        </h2>
+        <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl leading-tight">Built once. Tuned every month.</h2>
         <p class="mt-4 text-slate-300 leading-relaxed">
-          Every page is engineered around a single visitor decision: book, buy, or call. No vanity sliders. No carousels nobody clicks. Real performance, real tracking, and a CTA that's impossible to miss.
+          I'm not just a builder — I'm your ongoing partner. Care plans keep your site fast, secure, and improving. AI tools handle the busy work so you can focus on running your business.
         </p>
         <ul class="mt-6 space-y-3 text-slate-300">
-          <li class="flex items-start gap-3"><span class="mt-1 text-emerald-400">✓</span><span>Sub-1.5s LCP on mobile, even on slower connections.</span></li>
-          <li class="flex items-start gap-3"><span class="mt-1 text-emerald-400">✓</span><span>One primary CTA per page, tested and tracked.</span></li>
-          <li class="flex items-start gap-3"><span class="mt-1 text-emerald-400">✓</span><span>Honest hosting recommendations and locked-in pricing.</span></li>
+          <li class="flex items-start gap-3"><span class="mt-1 text-emerald-400">✓</span><span>Sub-1.5s LCP on mobile, monitored every month.</span></li>
+          <li class="flex items-start gap-3"><span class="mt-1 text-emerald-400">✓</span><span>One human partner — not three vendors blaming each other.</span></li>
+          <li class="flex items-start gap-3"><span class="mt-1 text-emerald-400">✓</span><span>AI handles content, leads, and reviews while you sleep.</span></li>
         </ul>
       </div>
     </div>
   </section>
 
-  <!-- SERVICES -->
+  <!-- REVIEWS -->
   <section class="border-y border-white/10 bg-white/[0.02]">
     <div class="mx-auto max-w-7xl px-5 py-24">
-      <div class="mb-12 max-w-2xl">
-        <div class="text-xs font-semibold uppercase tracking-wider text-brand-accent">Services</div>
-        <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl">Three focused offerings.</h2>
-        <p class="mt-3 text-slate-300">No fluff. No upsells you don't need. Pick one or all three.</p>
+      <div class="mb-12 flex flex-wrap items-end justify-between gap-4">
+        <div class="max-w-2xl">
+          <div class="text-xs font-semibold uppercase tracking-wider text-brand-accent">Real client reviews</div>
+          <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl">Don't take my word for it.</h2>
+          <p class="mt-3 text-slate-300">Verified Trustpilot reviews from actual small business owners.</p>
+        </div>
+        <a href="/reviews" class="text-brand-accent underline underline-offset-4">Read all reviews →</a>
       </div>
       <div class="grid gap-6 md:grid-cols-3">
-        {services.map((s) => (
-          <a href={s.href} class="card group block">
-            <div class="flex items-center justify-between">
-              <span class="text-brand-accent text-sm font-semibold tracking-wider">{s.num} · {s.label}</span>
-              <span class="text-slate-500 group-hover:text-brand-accent transition">→</span>
-            </div>
-            <h3 class="mt-4 text-2xl font-semibold text-white">{s.title}</h3>
-            <p class="mt-3 text-slate-300 leading-relaxed">{s.body}</p>
-          </a>
+        {reviews.map((r) => (
+          <figure class="card flex flex-col">
+            <div class="text-yellow-400 text-lg">★★★★★</div>
+            <blockquote class="mt-3 text-slate-200 leading-relaxed flex-1">"{r.quote}"</blockquote>
+            <figcaption class="mt-5 flex items-center justify-between text-sm">
+              <span class="font-semibold text-white">{r.name}</span>
+              <span class="text-emerald-400">{r.source} · verified</span>
+            </figcaption>
+          </figure>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- REVIEWS -->
+  <!-- PROCESS -->
   <section class="mx-auto max-w-7xl px-5 py-24">
-    <div class="mb-12 flex flex-wrap items-end justify-between gap-4">
-      <div class="max-w-2xl">
-        <div class="text-xs font-semibold uppercase tracking-wider text-brand-accent">Real client reviews</div>
-        <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl">Don't take my word for it.</h2>
-        <p class="mt-3 text-slate-300">Verified Trustpilot reviews from actual small business owners.</p>
-      </div>
-      <a href="/reviews" class="text-brand-accent underline underline-offset-4">Read all reviews →</a>
+    <div class="mb-12 max-w-2xl">
+      <div class="text-xs font-semibold uppercase tracking-wider text-brand-accent">Process</div>
+      <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl">From first call to live in weeks, not months.</h2>
+      <p class="mt-3 text-slate-300">No mystery. No "we'll be in touch." A clear, predictable process you can plan around.</p>
     </div>
-    <div class="grid gap-6 md:grid-cols-3">
-      {reviews.map((r) => (
-        <figure class="card flex flex-col">
-          <div class="text-yellow-400 text-lg">★★★★★</div>
-          <blockquote class="mt-3 text-slate-200 leading-relaxed flex-1">"{r.quote}"</blockquote>
-          <figcaption class="mt-5 flex items-center justify-between text-sm">
-            <span class="font-semibold text-white">{r.name}</span>
-            <span class="text-emerald-400">{r.source} · verified</span>
-          </figcaption>
-        </figure>
+    <ol class="grid gap-6 md:grid-cols-4">
+      {process.map((p, i) => (
+        <li class="relative">
+          <div class="flex items-center gap-3">
+            <span class="flex h-10 w-10 items-center justify-center rounded-full border border-brand-accent/40 bg-brand-accent/10 text-sm font-bold text-brand-accent">{p.step}</span>
+            {i < process.length - 1 && (
+              <span class="hidden md:block flex-1 h-px bg-gradient-to-r from-brand-accent/40 to-transparent"></span>
+            )}
+          </div>
+          <h3 class="mt-4 text-lg font-semibold text-white">{p.title}</h3>
+          <p class="mt-2 text-slate-300 text-sm leading-relaxed">{p.body}</p>
+        </li>
       ))}
-    </div>
+    </ol>
   </section>
 
-  <!-- PROCESS TIMELINE -->
+  <!-- HOSTING COMPARISON -->
   <section class="border-y border-white/10 bg-white/[0.02]">
     <div class="mx-auto max-w-7xl px-5 py-24">
-      <div class="mb-12 max-w-2xl">
-        <div class="text-xs font-semibold uppercase tracking-wider text-brand-accent">Process</div>
-        <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl">From first call to live in weeks, not months.</h2>
-        <p class="mt-3 text-slate-300">No mystery. No "we'll be in touch." A clear, predictable process you can plan around.</p>
+      <div class="mb-12 flex flex-wrap items-end justify-between gap-4">
+        <div class="max-w-2xl">
+          <div class="text-xs font-semibold uppercase tracking-wider text-brand-accent">Hosting</div>
+          <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl">Hosting without the trap doors.</h2>
+          <p class="mt-3 text-slate-300">My honest, regularly-updated picks — with the renewal pricing nobody else shows you upfront.</p>
+        </div>
+        <a href="/hosting" class="text-brand-accent underline underline-offset-4">See full comparison →</a>
       </div>
-      <ol class="grid gap-6 md:grid-cols-4">
-        {process.map((p, i) => (
-          <li class="relative">
-            <div class="flex items-center gap-3">
-              <span class="flex h-10 w-10 items-center justify-center rounded-full border border-brand-accent/40 bg-brand-accent/10 text-sm font-bold text-brand-accent">{p.step}</span>
-              {i < process.length - 1 && (
-                <span class="hidden md:block flex-1 h-px bg-gradient-to-r from-brand-accent/40 to-transparent"></span>
+      <div class="grid gap-6 md:grid-cols-3">
+        {featuredHosts.map((h) => {
+          const badge = hostBadges[h.slug];
+          const isFeatured = h.slug === 'siteground';
+          const ringClass = isFeatured ? 'ring-2 ring-emerald-400/40' : '';
+          const colorClass = {
+            emerald: 'border-emerald-400/40 bg-emerald-400/10 text-emerald-300',
+            yellow: 'border-yellow-400/40 bg-yellow-400/10 text-yellow-300',
+            blue: 'border-blue-400/40 bg-blue-400/10 text-blue-300',
+          };
+          return (
+            <article class={`card relative flex flex-col ${ringClass}`}>
+              {isFeatured && (
+                <span class="absolute -top-3 left-6 rounded-full bg-emerald-400 px-3 py-0.5 text-xs font-bold text-slate-950">Top pick</span>
               )}
-            </div>
-            <h3 class="mt-4 text-lg font-semibold text-white">{p.title}</h3>
-            <p class="mt-2 text-slate-300 text-sm leading-relaxed">{p.body}</p>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
-
-  <!-- HOSTING -->
-  <section class="mx-auto max-w-7xl px-5 py-24">
-    <div class="grid gap-10 md:grid-cols-2 md:gap-16 items-center">
-      <div>
-        <div class="text-xs font-semibold uppercase tracking-wider text-brand-accent">Hosting</div>
-        <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl">Hosting without the trap doors.</h2>
-        <p class="mt-4 text-slate-300 leading-relaxed">
-          I keep an honest, regularly-updated comparison of the only hosts I'd put my own clients on — with discounted signup links and the renewal pricing nobody else shows you upfront.
-        </p>
-        <div class="mt-7 flex flex-wrap gap-3">
-          <a href="/hosting" class="btn-primary">Compare hosting</a>
-          <a href="https://link.me/webguynick" rel="nofollow sponsored" class="btn-ghost">Get discounts</a>
-        </div>
-      </div>
-      <div class="relative">
-        <div class="card relative overflow-hidden">
-          <div class="absolute -top-10 -right-10 h-40 w-40 rounded-full bg-brand-accent/20 blur-2xl"></div>
-          <div class="relative">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-semibold uppercase tracking-wider text-brand-accent">Top pick right now</span>
-              <span class="text-yellow-400">★★★★★</span>
-            </div>
-            <h3 class="mt-3 text-2xl font-semibold text-white">Cloudflare Pages</h3>
-            <p class="mt-2 text-slate-300 leading-relaxed">Free tier. Global edge. Unmetered bandwidth. TTFB under 100ms in most of the US, and it scales for free.</p>
-            <dl class="mt-5 grid grid-cols-3 gap-4 border-t border-white/10 pt-5 text-sm">
-              <div>
-                <dt class="text-slate-500">Starts at</dt>
-                <dd class="font-semibold text-white">$0/mo</dd>
+              <div class={`inline-flex w-fit items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-semibold ${colorClass[badge.color]}`}>
+                {badge.tag}
               </div>
-              <div>
-                <dt class="text-slate-500">TTFB</dt>
-                <dd class="font-semibold text-white">&lt;100ms</dd>
+              <h3 class="mt-4 text-2xl font-semibold text-white">{h.data.name}</h3>
+              <div class="mt-1 flex items-center gap-2 text-sm">
+                <span class="text-yellow-400">★★★★★</span>
+                <span class="text-slate-400">{h.data.rating.toFixed(1)} / 5</span>
               </div>
-              <div>
-                <dt class="text-slate-500">Uptime</dt>
-                <dd class="font-semibold text-white">99.99%</dd>
+              <p class="mt-3 text-slate-300 leading-relaxed text-sm">{h.data.bestFor}</p>
+              <ul class="mt-4 space-y-1.5 text-sm text-slate-200 flex-1">
+                {h.data.pros.slice(0, 3).map((p: string) => (
+                  <li class="flex items-start gap-2"><span class="mt-0.5 text-emerald-400">✓</span><span>{p}</span></li>
+                ))}
+              </ul>
+              <div class="mt-5 grid grid-cols-2 gap-3 border-t border-white/10 pt-4 text-sm">
+                <div><div class="text-slate-500 text-xs">From</div><div class="font-bold text-white">{h.data.priceFrom}</div></div>
+                <div class="text-right"><div class="text-slate-500 text-xs">Best for</div><div class="font-bold text-white text-xs">{badge.tag.replace('Best ', '')}</div></div>
               </div>
-            </dl>
-            <a href="/hosting" class="mt-5 inline-block text-brand-accent underline underline-offset-4">Read full review →</a>
-          </div>
-        </div>
+              <div class="mt-5 flex flex-wrap gap-2">
+                <a href={h.data.url} rel="nofollow sponsored" target="_blank" class={isFeatured ? 'btn-primary text-sm flex-1 text-center' : 'btn-ghost text-sm flex-1 text-center'}>Visit {h.data.vendor}</a>
+                <a href={`/hosting/${h.slug}`} class="btn-ghost text-sm flex-1 text-center">Review</a>
+              </div>
+            </article>
+          );
+        })}
       </div>
     </div>
   </section>
 
   <!-- LATEST ARTICLES -->
-  <section class="border-y border-white/10 bg-white/[0.02]">
-    <div class="mx-auto max-w-7xl px-5 py-24">
-      <div class="mb-12 flex flex-wrap items-end justify-between gap-4">
-        <div class="max-w-2xl">
-          <div class="text-xs font-semibold uppercase tracking-wider text-brand-accent">From the blog</div>
-          <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl">Practical guides for small business owners.</h2>
-          <p class="mt-3 text-slate-300">New articles every week. AI tools, web speed, hosting, and the stuff that actually moves the needle.</p>
-        </div>
-        <a href="/articles" class="text-brand-accent underline underline-offset-4">All articles →</a>
+  <section class="mx-auto max-w-7xl px-5 py-24">
+    <div class="mb-12 flex flex-wrap items-end justify-between gap-4">
+      <div class="max-w-2xl">
+        <div class="text-xs font-semibold uppercase tracking-wider text-brand-accent">From the blog</div>
+        <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl">Practical guides for small business owners.</h2>
+        <p class="mt-3 text-slate-300">New articles every week. AI tools, web speed, hosting, and the stuff that actually moves the needle.</p>
       </div>
-      <div class="grid gap-6 md:grid-cols-3">
-        {latest.map((post) => (
-          <a href={`/articles/${post.slug}`} class="card group block flex flex-col">
-            <div class="text-xs text-slate-500">
-              {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
-              {post.data.tags?.[0] && (
-                <>
-                  <span class="mx-2 text-slate-700">·</span>
-                  <span class="text-brand-accent">{post.data.tags[0]}</span>
-                </>
-              )}
-            </div>
-            <h3 class="mt-3 text-xl font-semibold text-white group-hover:text-brand-accent transition">{post.data.title}</h3>
-            <p class="mt-3 text-slate-300 leading-relaxed line-clamp-3 flex-1">{post.data.description}</p>
-            <div class="mt-5 text-brand-accent text-sm">Read article →</div>
-          </a>
-        ))}
-      </div>
+      <a href="/articles" class="text-brand-accent underline underline-offset-4">All articles →</a>
+    </div>
+    <div class="grid gap-6 md:grid-cols-3">
+      {latest.map((post) => (
+        <a href={`/articles/${post.slug}`} class="card group block flex flex-col">
+          <div class="text-xs text-slate-500">
+            {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+            {post.data.tags?.[0] && (
+              <>
+                <span class="mx-2 text-slate-700">·</span>
+                <span class="text-brand-accent">{post.data.tags[0]}</span>
+              </>
+            )}
+          </div>
+          <h3 class="mt-3 text-xl font-semibold text-white group-hover:text-brand-accent transition">{post.data.title}</h3>
+          <p class="mt-3 text-slate-300 leading-relaxed line-clamp-3 flex-1">{post.data.description}</p>
+          <div class="mt-5 text-brand-accent text-sm">Read article →</div>
+        </a>
+      ))}
     </div>
   </section>
 
   <!-- FAQ -->
-  <section class="mx-auto max-w-7xl px-5 py-24">
-    <div class="grid gap-12 md:grid-cols-3 md:gap-16">
-      <div>
-        <div class="text-xs font-semibold uppercase tracking-wider text-brand-accent">FAQ</div>
-        <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl leading-tight">Common questions, straight answers.</h2>
-        <p class="mt-4 text-slate-300">Don't see yours? <a href="/contact" class="text-brand-accent underline underline-offset-4">Just ask</a>.</p>
-      </div>
-      <div class="md:col-span-2 divide-y divide-white/10 border-t border-white/10">
-        {faqs.map((f) => (
-          <details class="group py-5">
-            <summary class="flex cursor-pointer items-center justify-between gap-4 list-none">
-              <span class="text-lg font-semibold text-white">{f.q}</span>
-              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/15 text-slate-300 group-open:bg-brand-accent group-open:border-brand-accent group-open:text-white transition">
-                <span class="group-open:hidden">+</span>
-                <span class="hidden group-open:inline">−</span>
-              </span>
-            </summary>
-            <p class="mt-3 text-slate-300 leading-relaxed">{f.a}</p>
-          </details>
-        ))}
+  <section class="border-y border-white/10 bg-white/[0.02]">
+    <div class="mx-auto max-w-7xl px-5 py-24">
+      <div class="grid gap-12 md:grid-cols-3 md:gap-16">
+        <div>
+          <div class="text-xs font-semibold uppercase tracking-wider text-brand-accent">FAQ</div>
+          <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl leading-tight">Common questions, straight answers.</h2>
+          <p class="mt-4 text-slate-300">Don't see yours? <a href="/contact" class="text-brand-accent underline underline-offset-4">Just ask</a>.</p>
+        </div>
+        <div class="md:col-span-2 divide-y divide-white/10 border-t border-white/10">
+          {faqs.map((f) => (
+            <details class="group py-5">
+              <summary class="flex cursor-pointer items-center justify-between gap-4 list-none">
+                <span class="text-lg font-semibold text-white">{f.q}</span>
+                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/15 text-slate-300 group-open:bg-brand-accent group-open:border-brand-accent group-open:text-white transition">
+                  <span class="group-open:hidden">+</span>
+                  <span class="hidden group-open:inline">−</span>
+                </span>
+              </summary>
+              <p class="mt-3 text-slate-300 leading-relaxed">{f.a}</p>
+            </details>
+          ))}
+        </div>
       </div>
     </div>
   </section>
