@@ -1,7 +1,7 @@
 ---
 name: "Hostinger"
 vendor: "Hostinger"
-url: "https://hostinger.com?REFERRALCODE=REPLACE_ME"
+url: "https://hostinger.com/?REFERRALCODE=webguynick"
 affiliate: true
 rating: 4.3
 priceFrom: "$2.49/mo"
@@ -34,4 +34,4 @@ The $2.49/mo price is only for long multi year commitments. Month to month is cl
 
 ## Verdict
 
-If budget is the top constraint and you only need one or two small business sites, Hostinger gives the best speed to dollar ratio in the shared hosting tier. [See current plans](https://hostinger.com?REFERRALCODE=REPLACE_ME).
+If budget is the top constraint and you only need one or two small business sites, Hostinger gives the best speed to dollar ratio in the shared hosting tier. [See current plans](https://hostinger.com/?REFERRALCODE=webguynick).
