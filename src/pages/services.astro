@@ -1,176 +1,117 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import MailchimpForm from '../components/MailchimpForm.astro';
+import { servicesByCategory, categoryOrder } from '../data/services';
 
-const services = [
-  {
-    group: 'Build & Ship',
-    title: 'New Website Build',
-    priceFrom: 'from $1,500',
-    blurb: 'A complete, conversion-led small-business site. Design, copy polish, launch, and 30 days of post-launch support.',
-    bullets: [
-      'Up to 5 pages, mobile-first',
-      'Built on a modern static stack (Astro / 11ty)',
-      'Core Web Vitals 90+ at launch',
-      'Contact form, analytics, and SEO baseline',
-      'Domain + hosting setup',
-    ],
-  },
-  {
-    group: 'Build & Ship',
-    title: 'E-commerce Starter',
-    priceFrom: 'from $2,500',
-    blurb: 'A lean online store for small businesses. Shopify or a Stripe powered static store, set up correctly from day one.',
-    bullets: [
-      'Up to 25 products loaded and photographed',
-      'Stripe or Shopify checkout, tax + shipping configured',
-      'Abandoned cart email wired to Mailchimp or Klaviyo',
-      'Order confirmation and review request flows',
-    ],
-  },
-  {
-    group: 'Optimize',
-    title: 'Performance Tune-Up',
-    priceFrom: 'from $500',
-    blurb: 'Keep your existing site. Strip the bloat, fix the Core Web Vitals, and actually show up on page one.',
-    bullets: [
-      'Full Lighthouse + SEO audit',
-      'Image + font + JS optimization',
-      'Caching & CDN setup',
-      'Measurable before/after numbers',
-    ],
-  },
-  {
-    group: 'Optimize',
-    title: 'Accessibility & ADA Audit',
-    priceFrom: 'from $400',
-    blurb: 'WCAG 2.2 AA audit and remediation. Protects against drive-by ADA lawsuits and opens your site to ~20% more customers.',
-    bullets: [
-      'Automated + manual WCAG 2.2 AA scan',
-      'Keyboard and screen reader test pass',
-      'Remediation plan with severity ratings',
-      'Implementation of critical fixes included',
-    ],
-  },
-  {
-    group: 'AI',
-    title: 'AI Chatbot Setup',
-    priceFrom: 'from $499',
-    blurb: 'A Claude or OpenAI chatbot trained on your site, FAQs, and services. Answers customer questions, captures leads, hands off to you.',
-    bullets: [
-      'Trained only on your content (no hallucinations)',
-      '24/7 lead capture with SMS or email handoff',
-      'Conversation transcripts emailed weekly',
-      'Flat fee setup, you keep the API key and the data',
-    ],
-  },
-  {
-    group: 'AI',
-    title: 'AI Voice Agent Setup',
-    priceFrom: 'from $899',
-    blurb: 'An AI that answers your phones after hours or on overflow. Books jobs, captures leads, compliant call recording disclosures included.',
-    bullets: [
-      'Custom prompt and greeting in your brand voice',
-      'Calendar booking + SMS handoff to the owner',
-      'Two-party consent disclosures built in',
-      'Monthly platform fee typically $80 to $250',
-    ],
-  },
-  {
-    group: 'AI',
-    title: 'AI Content & SEO Sprint',
-    priceFrom: 'from $1,200',
-    blurb: 'A 30-day sprint to stand up a content engine using AI the right way. You keep the system, we get it running.',
-    bullets: [
-      '12 article outlines targeted to your customers',
-      '4 published articles with on-page SEO',
-      'Schema, internal linking, and image optimization',
-      'Voice-memo to draft workflow your team can run',
-    ],
-  },
-  {
-    group: 'Grow',
-    title: 'Google Business Profile Optimization',
-    priceFrom: 'from $350',
-    blurb: 'Fix your Google Business Profile. Most small businesses leave 30 to 50% of local visibility on the table.',
-    bullets: [
-      'Full profile audit and category fix',
-      'Service list, attributes, and photos optimized',
-      'Posting cadence set up with templates',
-      'Review request automation wired to your CRM',
-    ],
-  },
-  {
-    group: 'Grow',
-    title: 'SEO & Content (Monthly)',
-    priceFrom: 'from $750/mo',
-    blurb: 'Technical SEO, keyword strategy, and publish-ready articles written for your customers, not for search engines.',
-    bullets: [
-      'Technical SEO audit',
-      'Monthly long-form article (1,000+ words)',
-      'Google Business Profile upkeep',
-      'Local citations cleanup',
-    ],
-  },
-  {
-    group: 'Maintain',
-    title: 'Digital Concierge (Monthly)',
-    priceFrom: 'from $149/mo',
-    blurb: 'Ongoing care. Security patches, backups, content changes, and a quarterly growth review. Predictable, cancel anytime.',
-    bullets: [
-      'Security patches + uptime monitoring',
-      'Daily off-site backups',
-      'Up to 1 hour/month of content edits',
-      'Quarterly SEO & speed report',
-    ],
-  },
-];
+const categoryDescriptions: Record<string, string> = {
+  'Websites': 'Custom WordPress builds and landing pages for small businesses, freelancers, and growing brands.',
+  'Care Plans': 'Monthly site care so your investment stays fast, secure, and earning.',
+  'Managed Hosting': 'Fast, secure WordPress hosting with daily backups and a real human watching for issues.',
+  'eCommerce': 'WooCommerce stores from starter to advanced, plus ongoing management for active sellers.',
+  'SEO & Marketing': 'Local SEO, content writing, email marketing, and Google Business Profile work that actually moves the needle.',
+  'AI Tools': 'Practical AI for small business: chatbots, voice agents, and AI-assisted content.',
+  'Security': 'Hack cleanup, malware removal, and proactive hardening to keep your site safe.',
+  'Design & Content': 'Logos, branding, speed tune-ups, audits, accessibility, and social integration.',
+  'Specialty Builds': 'Membership sites, online courses, and other advanced WordPress functionality.',
+};
 
-const groupOrder = ['Build & Ship', 'Optimize', 'AI', 'Grow', 'Maintain'];
-const servicesByGroup = groupOrder
-  .map((g) => ({ group: g, items: services.filter((s) => s.group === g) }))
-  .filter((g) => g.items.length);
+const badgeColors: Record<string, string> = {
+  'Most popular': 'border-emerald-400/40 bg-emerald-400/10 text-emerald-300',
+  'New': 'border-brand-accent/40 bg-brand-accent/10 text-brand-accent',
+  'Urgent': 'border-red-400/40 bg-red-400/10 text-red-300',
+};
 ---
 <BaseLayout
-  title="Services | Web Guy Nick"
-  description="Small-business web design, e-commerce, AI chatbots and voice agents, accessibility audits, SEO, Google Business Profile, and monthly maintenance from Web Guy Nick LLC."
+  title="Services & Pricing | Web Guy Nick"
+  description="Complete services menu from Web Guy Nick LLC: WordPress websites, care plans, managed hosting, WooCommerce, SEO, AI chatbots, malware removal, accessibility, and more. Transparent pricing, no surprises."
 >
-  <section class="mx-auto max-w-7xl px-5 pt-16 pb-10">
-    <h1 class="text-4xl font-extrabold text-white md:text-5xl">Services</h1>
-    <p class="mt-4 max-w-2xl text-lg text-slate-300">
-      Pick the one that fits. Not sure? <a href="/contact" class="text-brand-accent underline">Tell me what you're working on</a> and I'll point you at the right option, even if it isn't me.
-    </p>
+  <!-- HERO -->
+  <section class="relative overflow-hidden border-b border-white/10">
+    <div class="pointer-events-none absolute inset-0">
+      <div class="absolute -top-32 -left-32 h-[28rem] w-[28rem] rounded-full bg-brand-accent/10 blur-3xl"></div>
+      <div class="absolute top-10 right-[-8rem] h-[24rem] w-[24rem] rounded-full bg-brand-blue/15 blur-3xl"></div>
+    </div>
+    <div class="relative mx-auto max-w-7xl px-5 py-20 md:py-24">
+      <div class="text-xs font-semibold uppercase tracking-wider text-brand-accent">Services & pricing</div>
+      <h1 class="mt-3 text-4xl font-extrabold text-white md:text-6xl leading-tight">Everything Web Guy Nick offers, in one place.</h1>
+      <p class="mt-5 max-w-2xl text-lg text-slate-300">
+        Transparent pricing across the full menu. Not sure which one fits?
+        <a href="/contact" class="text-brand-accent underline underline-offset-4">Tell me what you're working on</a>
+        and I'll point you at the right option — even if it isn't me.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3 text-sm">
+        {categoryOrder.map((cat) => (
+          <a href={`#${cat.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} class="rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-slate-200 hover:border-brand-accent/60 hover:text-white transition">
+            {cat}
+          </a>
+        ))}
+      </div>
+    </div>
   </section>
 
-  <section class="mx-auto max-w-7xl px-5 pb-20 space-y-14">
-    {servicesByGroup.map(({ group, items }) => (
-      <div>
-        <div class="mb-6 flex items-baseline gap-3">
-          <h2 class="text-2xl font-bold text-white">{group}</h2>
-          <span class="text-sm text-slate-500">{items.length} {items.length === 1 ? 'offering' : 'offerings'}</span>
+  <!-- CATEGORIES -->
+  <section class="mx-auto max-w-7xl px-5 pb-20">
+    {servicesByCategory.map(({ category, items }) => (
+      <div id={category.toLowerCase().replace(/[^a-z0-9]+/g, '-')} class="pt-16 scroll-mt-24">
+        <div class="mb-8 max-w-3xl">
+          <div class="flex items-baseline gap-3">
+            <h2 class="text-3xl font-bold text-white md:text-4xl">{category}</h2>
+            <span class="text-sm text-slate-500">{items.length} {items.length === 1 ? 'service' : 'services'}</span>
+          </div>
+          {categoryDescriptions[category] && (
+            <p class="mt-3 text-slate-300 leading-relaxed">{categoryDescriptions[category]}</p>
+          )}
         </div>
-        <div class="grid gap-6 md:grid-cols-2">
+        <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {items.map((s) => (
-            <div class="card flex flex-col">
-              <div class="flex items-baseline justify-between gap-3">
-                <h3 class="text-2xl font-semibold text-white">{s.title}</h3>
-                <span class="text-sm font-semibold text-brand-accent whitespace-nowrap">{s.priceFrom}</span>
+            <article class="card flex flex-col">
+              <div class="flex items-start justify-between gap-3">
+                <h3 class="text-xl font-semibold text-white leading-snug">{s.title}</h3>
+                {s.badge && (
+                  <span class={`shrink-0 rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${badgeColors[s.badge] || 'border-white/15 bg-white/5 text-slate-200'}`}>
+                    {s.badge}
+                  </span>
+                )}
               </div>
-              <p class="mt-3 text-slate-300">{s.blurb}</p>
-              <ul class="mt-4 space-y-2 text-sm text-slate-300">
-                {s.bullets.map((b) => (
-                  <li class="flex gap-2"><span class="text-brand-accent">✓</span><span>{b}</span></li>
+              <div class="mt-3 flex items-baseline justify-between gap-2 border-b border-white/10 pb-3">
+                <span class="text-lg font-bold text-brand-accent">{s.price}</span>
+                <span class="text-xs uppercase tracking-wider text-slate-500">{s.type}</span>
+              </div>
+              {s.delivery && (
+                <div class="mt-3 text-xs text-slate-400"><span class="font-semibold text-slate-300">Delivery:</span> {s.delivery}</div>
+              )}
+              <p class="mt-3 text-sm text-slate-300 leading-relaxed">{s.blurb}</p>
+              <ul class="mt-4 space-y-1.5 text-sm flex-1">
+                {s.features.map((f) => (
+                  <li class="flex items-start gap-2">
+                    <svg class="mt-1 h-3.5 w-3.5 shrink-0 text-emerald-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.7 5.3a1 1 0 0 1 0 1.4l-8 8a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.4L8 12.6l7.3-7.3a1 1 0 0 1 1.4 0z" clip-rule="evenodd"/></svg>
+                    <span class="text-slate-300">{f}</span>
+                  </li>
                 ))}
               </ul>
-              <a href="/contact" class="btn-primary mt-6 self-start">Start this</a>
-            </div>
+              <a href={s.href || `/contact?service=${s.slug}`} class="btn-primary mt-6 self-start text-sm">
+                {s.href ? 'See details →' : 'Start this →'}
+              </a>
+            </article>
           ))}
         </div>
       </div>
     ))}
   </section>
 
-  <section class="mx-auto max-w-7xl px-5 pb-24">
+  <!-- BOTTOM CTA -->
+  <section class="border-y border-white/10 bg-white/[0.02]">
+    <div class="mx-auto max-w-4xl px-5 py-20 text-center">
+      <h2 class="text-3xl font-bold text-white md:text-4xl">Don't see exactly what you need?</h2>
+      <p class="mt-4 text-lg text-slate-300">Most of what I do is custom anyway. Tell me what you're working on and I'll send back a clear, flat quote — usually within 24 hours.</p>
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <a href="/contact" class="btn-primary">Get a free quote</a>
+        <a href="/care-plans" class="btn-ghost">Compare care plans</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-5 py-20">
     <MailchimpForm />
   </section>
 </BaseLayout>

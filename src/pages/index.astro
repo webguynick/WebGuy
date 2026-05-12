@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import MailchimpForm from '../components/MailchimpForm.astro';
 import MatrixRain from '../components/MatrixRain.astro';
 import { getCollection } from 'astro:content';
+import { carePlans } from '../data/services';
 
 const latest = (await getCollection('articles', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -53,57 +54,6 @@ const services = [
   },
 ];
 
-const carePlans = [
-  {
-    tier: 'Essentials',
-    price: 99,
-    tagline: 'Keep the site safe, fast, and online.',
-    description: 'For small business sites that are working — they just need a pro keeping watch.',
-    features: [
-      'Weekly WordPress core, theme & plugin updates',
-      'Daily off-site backups (30-day retention)',
-      'Malware scanning & uptime monitoring',
-      'Monthly performance & security report',
-      '30 min/mo of content edits',
-      'Email support, 24-hour response',
-    ],
-    cta: 'Start Essentials',
-  },
-  {
-    tier: 'Growth',
-    price: 299,
-    tagline: 'Maintenance + active SEO and conversion work.',
-    description: 'For owners who want their site to actively grow traffic and leads, not just stay online.',
-    featured: true,
-    features: [
-      'Everything in Essentials',
-      '2 hrs/mo of design & content updates',
-      'Local SEO + Google Business Profile management',
-      'Monthly Lighthouse + Core Web Vitals tune-up',
-      'Conversion tracking (GA4, Pixel, GTM)',
-      'On-page SEO for 1 new page or post / mo',
-      'Priority support, same-day response',
-    ],
-    cta: 'Start Growth',
-  },
-  {
-    tier: 'AI-Powered',
-    price: 599,
-    tagline: 'Done-for-you growth with AI working 24/7.',
-    description: 'For businesses ready to let AI handle leads, content, and customer service while they sleep.',
-    features: [
-      'Everything in Growth',
-      'AI chatbot trained on your business (24/7 lead capture)',
-      'AI-generated blog post + social repurposing / mo',
-      'Review request automation & reputation monitoring',
-      'AI voice agent for after-hours calls (add-on ready)',
-      'Quarterly strategy call + roadmap',
-      'White-glove support, 1-hour response',
-    ],
-    cta: 'Start AI-Powered',
-  },
-];
-
 const process = [
   { step: '01', title: 'Free 20-min audit', body: 'We dig into your site, traffic, and goals — no pitch deck, no commitment.' },
   { step: '02', title: 'Scoped proposal', body: 'A flat, honest quote with timeline and exact deliverables. No surprise add-ons.' },
@@ -112,8 +62,8 @@ const process = [
 ];
 
 const faqs = [
-  { q: 'How much does a website cost?', a: 'Most small business sites land between $1,500 and $4,500 — flat rate, no per-page nonsense. Care plans start at $99/mo. You get a fixed quote upfront.' },
-  { q: "What's included in a care plan?", a: 'All plans cover updates, backups, security, and uptime monitoring. Higher tiers add SEO work, content edits, performance tuning, and AI tools like chatbots and content automation.' },
+  { q: 'How much does a website cost?', a: 'Most small business sites land between $1,500 and $4,500 — flat rate, no per-page nonsense. Care plans start at $79/mo, managed hosting at $29/mo. You get a fixed quote upfront.' },
+  { q: "What's included in a care plan?", a: 'All plans cover updates, backups, security, and uptime monitoring. Higher tiers add SEO health checks, more edit time, performance tuning, and quarterly strategy calls.' },
   { q: 'Do I need a care plan if my site is already built?', a: 'Honestly, yes. WordPress, plugins, and SSL certs all need regular care to stay secure and fast. A care plan also gets you a real human to call when something breaks — at 2am, on a holiday, when a form stops working.' },
   { q: 'How long does a new build take?', a: 'A focused 5–7 page small business site typically launches in 2–3 weeks. Larger builds with custom features or e-commerce run 4–6 weeks. Weekly sprints with previews.' },
   { q: 'Do you work with WordPress, or something else?', a: "Both. WordPress with the Divi theme when you need a CMS your team can update. A modern static stack (Astro) when speed and SEO are the priority. I'll recommend the right tool for your situation." },
@@ -317,7 +267,7 @@ const hostBadges: Record<string, { tag: string; color: string }> = {
                 </li>
               ))}
             </ul>
-            <a href={`/contact?plan=${plan.tier.toLowerCase()}`} class={`mt-7 inline-flex items-center justify-center rounded-md px-5 py-2.5 text-sm font-semibold transition ${
+            <a href={`/contact?plan=${plan.slug}`} class={`mt-7 inline-flex items-center justify-center rounded-md px-5 py-2.5 text-sm font-semibold transition ${
               plan.featured
                 ? 'bg-emerald-400 text-slate-950 hover:bg-emerald-300'
                 : 'border border-white/15 bg-white/5 text-white hover:bg-white/10'
@@ -325,7 +275,10 @@ const hostBadges: Record<string, { tag: string; color: string }> = {
           </article>
         ))}
       </div>
-      <p class="mt-8 text-center text-sm text-slate-400">All plans month-to-month. Cancel anytime. <a href="/contact" class="text-brand-accent underline underline-offset-4">Need something custom? Let's talk.</a></p>
+      <p class="mt-8 text-center text-sm text-slate-400">All plans month-to-month. Cancel anytime. <a href="/care-plans" class="text-brand-accent underline underline-offset-4">See full feature comparison →</a></p>
+      <div class="mt-4 text-center text-sm text-slate-400">
+        Need hosting too? <a href="/hosting-plans" class="text-brand-blue-bright underline underline-offset-4">See managed hosting plans →</a>
+      </div>
     </div>
   </section>
 

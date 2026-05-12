@@ -1,0 +1,193 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MailchimpForm from '../components/MailchimpForm.astro';
+import { hostingPlans } from '../data/services';
+
+const comparison = [
+  { feature: 'WordPress sites included', starter: '1', business: '1', premium: '1' },
+  { feature: 'Storage', starter: '10 GB', business: '25 GB', premium: '50 GB' },
+  { feature: 'Free SSL certificate', starter: '✓', business: '✓', premium: '✓' },
+  { feature: 'CDN', starter: '—', business: 'Included', premium: 'Cloudflare Pro' },
+  { feature: 'Automated backups', starter: 'Daily', business: 'Daily + on-demand', premium: 'Real-time' },
+  { feature: 'Backup retention', starter: '30 days', business: '30 days', premium: '90 days' },
+  { feature: 'WordPress + plugin updates', starter: 'Monthly', business: 'Weekly', premium: 'As released' },
+  { feature: 'Staging environment', starter: '—', business: '✓', premium: 'Staging + dev' },
+  { feature: 'Malware scanning', starter: 'Basic firewall', business: 'Weekly', premium: 'Daily' },
+  { feature: 'Uptime monitoring', starter: '✓', business: '✓', premium: '✓ (1-min)' },
+  { feature: 'Monthly performance report', starter: '—', business: '✓', premium: '✓' },
+  { feature: 'Included edit time', starter: '—', business: '—', premium: '1 hr/mo' },
+  { feature: 'Support', starter: 'Email (48 hr)', business: 'Priority email (24 hr)', premium: 'Phone + email (same-day)' },
+];
+
+const faqs = [
+  { q: 'Why pay you for hosting instead of going direct to SiteGround or Hostinger?', a: "Honestly, if you want to manage your own hosting, SiteGround is great and I happily recommend them (see /hosting for affiliate links). What you get with me is one bill, one person to call, and proactive monitoring — I notice if your site goes down, your plugins fall behind, or your SSL expires. Plus the Business and Premium tiers include staging and edits, which most shared hosts charge extra for." },
+  { q: "Can I bring my existing site?", a: "Yes. I handle the entire migration for free at every tier — DNS, files, database, SSL, the works. Most migrations finish within 48 hours with zero downtime." },
+  { q: 'Where is the hosting actually run?', a: "On managed VPS infrastructure (Cloudways / GridPane / RunCloud-backed) with U.S. data centers and Cloudflare in front. Real LCP for most small business sites lands under 1.5s globally." },
+  { q: "Does hosting include a care plan?", a: "No — hosting and care are separate so you can pick what you actually need. Most clients pair them. Bundle a hosting plan with any care plan and you get 10% off both." },
+  { q: 'What if I outgrow my plan?', a: "Upgrade with one email. The change takes effect on your next billing cycle and there's no migration work — you stay on the same server, just with more resources allocated." },
+  { q: 'Do you host non-WordPress sites?', a: "I focus on WordPress (and the static Astro sites I build). If you need Node.js, Laravel, or other custom stacks, I can usually set up a custom hosting arrangement — just reach out." },
+];
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+<BaseLayout
+  title="Managed WordPress Hosting | Web Guy Nick"
+  description="Fast, secure managed WordPress hosting from $29/mo. Daily backups, free SSL, CDN, staging environments, and a real human watching for issues."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} slot="head" />
+
+  <!-- HERO -->
+  <section class="relative overflow-hidden border-b border-white/10">
+    <div class="pointer-events-none absolute inset-0">
+      <div class="absolute -top-32 -left-32 h-[28rem] w-[28rem] rounded-full bg-brand-blue/15 blur-3xl"></div>
+      <div class="absolute top-10 right-[-8rem] h-[24rem] w-[24rem] rounded-full bg-brand-accent/10 blur-3xl"></div>
+    </div>
+    <div class="relative mx-auto max-w-7xl px-5 py-20 md:py-24">
+      <div class="text-xs font-semibold uppercase tracking-wider text-brand-blue-bright">Managed hosting</div>
+      <h1 class="mt-3 text-4xl font-extrabold text-white md:text-6xl leading-tight">
+        WordPress hosting that
+        <span class="bg-gradient-to-r from-brand-blue-bright to-brand-accent bg-clip-text text-transparent">just works.</span>
+      </h1>
+      <p class="mt-5 max-w-2xl text-lg text-slate-300 leading-relaxed">
+        Fast, secure, monitored. Daily backups, free SSL, CDN, and a real human watching for issues. Plans from <span class="text-white font-semibold">$29/mo</span>. Free migration. Cancel anytime.
+      </p>
+      <div class="mt-8 grid gap-3 max-w-2xl text-sm text-slate-300 sm:grid-cols-3">
+        <div class="flex items-center gap-2"><span class="text-emerald-400">✓</span><span>Free migration</span></div>
+        <div class="flex items-center gap-2"><span class="text-emerald-400">✓</span><span>99.9% uptime SLA</span></div>
+        <div class="flex items-center gap-2"><span class="text-emerald-400">✓</span><span>One vendor, one bill</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="mx-auto max-w-7xl px-5 py-16">
+    <div class="grid gap-6 md:grid-cols-3 items-stretch">
+      {hostingPlans.map((plan) => (
+        <article class={`relative flex flex-col rounded-2xl border p-8 transition ${
+          plan.featured
+            ? 'border-brand-blue-bright/40 bg-gradient-to-b from-brand-blue/[0.10] to-white/[0.02] shadow-[0_0_60px_rgba(59,130,246,0.15)]'
+            : 'border-white/10 bg-white/[0.03] hover:border-white/20'
+        }`}>
+          {plan.featured && (
+            <span class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand-blue-bright px-3 py-0.5 text-xs font-bold text-slate-950">Most popular</span>
+          )}
+          <h3 class="text-2xl font-bold text-white">{plan.tier}</h3>
+          <p class="mt-1 text-sm text-slate-400">{plan.tagline}</p>
+          <div class="mt-6 flex items-baseline gap-1">
+            <span class="text-5xl font-extrabold text-white">${plan.price}</span>
+            <span class="text-slate-400 text-sm">/month</span>
+          </div>
+          <p class="mt-4 text-sm text-slate-300 leading-relaxed">{plan.description}</p>
+          <div class="mt-4 text-xs font-semibold uppercase tracking-wider text-slate-500">Best for: <span class="text-slate-300 normal-case font-normal">{plan.bestFor}</span></div>
+          <ul class="mt-6 space-y-2.5 text-sm flex-1">
+            {plan.features.map((f) => (
+              <li class="flex items-start gap-2.5">
+                <svg class="mt-0.5 h-4 w-4 shrink-0 text-brand-blue-bright" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.7 5.3a1 1 0 0 1 0 1.4l-8 8a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.4L8 12.6l7.3-7.3a1 1 0 0 1 1.4 0z" clip-rule="evenodd"/></svg>
+                <span class="text-slate-200">{f}</span>
+              </li>
+            ))}
+          </ul>
+          <a href={`/contact?hosting=${plan.slug}`} class={`mt-7 inline-flex items-center justify-center rounded-md px-5 py-2.5 text-sm font-semibold transition ${
+            plan.featured
+              ? 'bg-brand-blue-bright text-slate-950 hover:bg-brand-blue-bright/90'
+              : 'border border-white/15 bg-white/5 text-white hover:bg-white/10'
+          }`}>{plan.cta} →</a>
+        </article>
+      ))}
+    </div>
+    <p class="mt-8 text-center text-sm text-slate-400">All plans month-to-month. Free migration. <a href="/hosting" class="text-brand-accent underline underline-offset-4">Prefer to host yourself? Compare top hosts here.</a></p>
+  </section>
+
+  <!-- COMPARISON -->
+  <section class="border-y border-white/10 bg-white/[0.02]">
+    <div class="mx-auto max-w-7xl px-5 py-20">
+      <div class="mb-10 max-w-3xl">
+        <div class="text-xs font-semibold uppercase tracking-wider text-brand-blue-bright">Side by side</div>
+        <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl">Compare every feature.</h2>
+        <p class="mt-3 text-slate-300">No marketing fog. Here's exactly what's in each plan.</p>
+      </div>
+      <div class="overflow-x-auto rounded-2xl border border-white/10 bg-brand-bg">
+        <table class="w-full text-left text-sm">
+          <thead class="border-b border-white/10 bg-white/[0.04] text-slate-200">
+            <tr>
+              <th class="px-4 py-4 font-semibold sm:px-6">Feature</th>
+              <th class="px-3 py-4 font-semibold text-center min-w-[110px]">Starter<br/><span class="text-xs font-normal text-slate-400">$29/mo</span></th>
+              <th class="px-3 py-4 font-semibold text-center min-w-[110px] bg-brand-blue/10 text-brand-blue-bright">Business<br/><span class="text-xs font-normal text-brand-blue-bright/80">$59/mo</span></th>
+              <th class="px-3 py-4 font-semibold text-center min-w-[110px]">Premium<br/><span class="text-xs font-normal text-slate-400">$99/mo</span></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/5">
+            {comparison.map((row) => (
+              <tr class="hover:bg-white/[0.02]">
+                <td class="px-4 py-3 text-slate-300 sm:px-6">{row.feature}</td>
+                <td class="px-3 py-3 text-center text-slate-200">{row.starter}</td>
+                <td class="px-3 py-3 text-center text-slate-100 bg-brand-blue/5">{row.business}</td>
+                <td class="px-3 py-3 text-center text-slate-200">{row.premium}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY IT MATTERS -->
+  <section class="mx-auto max-w-7xl px-5 py-20">
+    <div class="grid gap-8 md:grid-cols-3">
+      <div class="card">
+        <div class="text-3xl">🚀</div>
+        <h3 class="mt-3 text-xl font-semibold text-white">Speed you can feel</h3>
+        <p class="mt-2 text-sm text-slate-300 leading-relaxed">Real LCP under 1.5s for most small business sites. Server-level caching, Cloudflare CDN, and zero noisy-neighbor problems from cheap shared hosting.</p>
+      </div>
+      <div class="card">
+        <div class="text-3xl">💾</div>
+        <h3 class="mt-3 text-xl font-semibold text-white">Backups that actually restore</h3>
+        <p class="mt-2 text-sm text-slate-300 leading-relaxed">Off-server daily backups (real-time on Premium) with one-click restore. Tested monthly. The kind of backups you only appreciate when you need them.</p>
+      </div>
+      <div class="card">
+        <div class="text-3xl">📞</div>
+        <h3 class="mt-3 text-xl font-semibold text-white">One vendor, one bill</h3>
+        <p class="mt-2 text-sm text-slate-300 leading-relaxed">Hosting, domain, SSL, email forwarding, monitoring — all from one place, with one human responsible. No finger-pointing between vendors when something goes wrong.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUNDLE CTA -->
+  <section class="border-y border-white/10 bg-gradient-to-r from-brand-blue/[0.10] via-emerald-400/[0.05] to-brand-accent/[0.10]">
+    <div class="mx-auto max-w-4xl px-5 py-16 text-center">
+      <h2 class="text-3xl font-bold text-white md:text-4xl">Bundle hosting + a care plan, save 10%.</h2>
+      <p class="mt-4 text-lg text-slate-300">One vendor handling your hosting AND your site maintenance — at a discount. Most clients land on Business hosting + Growth care.</p>
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <a href="/care-plans" class="btn-primary">See care plans →</a>
+        <a href="/contact?bundle=hosting-care" class="btn-ghost">Ask about a bundle</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="mx-auto max-w-3xl px-5 py-20">
+    <div class="mb-10 text-center">
+      <div class="text-xs font-semibold uppercase tracking-wider text-brand-blue-bright">FAQ</div>
+      <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl">Hosting questions.</h2>
+    </div>
+    <div class="space-y-3">
+      {faqs.map((f) => (
+        <details class="group rounded-xl border border-white/10 bg-white/[0.02] p-5 open:bg-white/[0.04] transition">
+          <summary class="flex cursor-pointer items-center justify-between font-semibold text-white list-none">
+            <span>{f.q}</span>
+            <span class="ml-4 text-brand-accent transition group-open:rotate-45">+</span>
+          </summary>
+          <p class="mt-3 text-slate-300 leading-relaxed text-sm">{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-5 pb-20">
+    <MailchimpForm />
+  </section>
+</BaseLayout>
