@@ -21,7 +21,8 @@
 
     // Brand-themed glyphs: code symbols + small biz keywords
     const glyphs = '01<>{}/\\$=#*+-•◆○●▪▫░'.split('');
-    const words = ['SEO', 'CSS', 'AI', 'CTR', 'CRO', 'WP', 'CDN', 'SSL', 'API', 'UX', 'UI', 'DNS', 'TTL', 'LCP', 'CWV'];
+    // Mostly tech, with a couple of Springfield easter eggs hidden in the rain
+    const words = ['SEO', 'CSS', 'AI', 'CTR', 'CRO', 'WP', 'CDN', 'SSL', 'API', 'UX', 'UI', 'DNS', 'TTL', 'LCP', 'CWV', 'DOH', 'MMM'];
 
     let columns = 0;
     let drops = [];
@@ -52,15 +53,15 @@
         const x = i * fontSize;
         const y = d.y * fontSize;
 
-        // Head: brand-accent green-cyan
-        ctx.fillStyle = 'rgba(96, 235, 175, 0.55)';
+        // Head: brand electric blue (matches the logo)
+        ctx.fillStyle = 'rgba(56, 189, 248, 0.55)';
         const head = d.useWord && Math.random() < 0.02
           ? words[Math.floor(Math.random() * words.length)]
           : glyphs[Math.floor(Math.random() * glyphs.length)];
         ctx.fillText(head, x, y);
 
         // Trailing dim
-        ctx.fillStyle = 'rgba(96, 235, 175, 0.18)';
+        ctx.fillStyle = 'rgba(30, 167, 234, 0.18)';
         const tail = glyphs[Math.floor(Math.random() * glyphs.length)];
         ctx.fillText(tail, x, y - fontSize * 2);
 

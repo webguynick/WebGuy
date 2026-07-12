@@ -1,10 +1,42 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="Page not found | Web Guy Nick" description="We couldn't find that page." noindex>
-  <section class="mx-auto max-w-3xl px-5 pt-24 pb-24 text-center">
-    <div class="text-6xl font-extrabold text-brand-accent">404</div>
-    <h1 class="mt-4 text-3xl font-bold text-white">That page took a wrong turn.</h1>
-    <p class="mt-3 text-slate-300">Try the <a href="/" class="text-brand-accent underline">home page</a> or <a href="/articles" class="text-brand-accent underline">latest articles</a>.</p>
+<BaseLayout title="D'oh! Page not found | Web Guy Nick" description="We couldn't find that page — but we can definitely fix your website." noindex>
+  <section class="relative overflow-hidden">
+    <div class="pointer-events-none absolute inset-0">
+      <div class="absolute -top-24 left-1/3 h-72 w-72 rounded-full bg-brand-accent/20 blur-3xl"></div>
+      <div class="absolute -bottom-24 right-1/3 h-72 w-72 rounded-full bg-brand-blue/25 blur-3xl"></div>
+    </div>
+
+    <div class="relative mx-auto max-w-3xl px-5 pt-24 pb-24 text-center">
+      <!-- Homer-style donut 404 -->
+      <div class="mx-auto flex items-center justify-center gap-2">
+        <span class="text-7xl font-extrabold text-brand-accent md:text-8xl">4</span>
+        <span aria-hidden="true" class="relative inline-flex h-20 w-20 items-center justify-center md:h-24 md:w-24">
+          <span class="absolute inset-0 rounded-full bg-brand-yellow"></span>
+          <span class="absolute inset-[30%] rounded-full bg-brand-black"></span>
+          <span class="absolute inset-0 rounded-full" style="background: radial-gradient(circle at 50% 50%, transparent 30%, #ff6ba5 31% 46%, transparent 47%);"></span>
+        </span>
+        <span class="text-7xl font-extrabold text-brand-accent md:text-8xl">4</span>
+      </div>
+
+      <p class="mt-6 text-2xl font-bold text-brand-yellow">D'oh!</p>
+      <h1 class="mt-2 text-3xl font-bold text-white md:text-4xl">This page ran off to Moe's.</h1>
+      <p class="mt-4 text-lg text-slate-300">
+        The link you followed is <span class="italic">unpossible</span> to find — but don't have a cow.
+        Your actual website shouldn't work like this. Mine embiggen conversions; this page just embiggened your confusion.
+      </p>
+
+      <div class="mt-9 flex flex-wrap justify-center gap-3">
+        <a href="/" class="btn-primary text-base">Back to the home page</a>
+        <a href="/contact" class="btn-ghost text-base">Get a free audit</a>
+      </div>
+
+      <p class="mt-8 text-sm text-slate-500">
+        Or browse the <a href="/articles" class="text-brand-accent underline underline-offset-4">latest articles</a>
+        · <a href="/services" class="text-brand-accent underline underline-offset-4">services</a>
+        · <a href="https://link.me/webguynick" target="_blank" rel="me noopener" class="text-brand-accent underline underline-offset-4">all my links</a>
+      </p>
+    </div>
   </section>
 </BaseLayout>

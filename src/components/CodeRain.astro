@@ -55,10 +55,10 @@
         const dist = Math.hypot(dx, dy);
         const glow = Math.max(0, 1 - dist / 220);
 
-        // Far columns: deep brand blue. Near cursor: bright cyan-blue glow.
-        const r = Math.round(59 + (96 - 59) * glow);
-        const g = Math.round(130 + (211 - 130) * glow);
-        const b = Math.round(246 + (238 - 246) * glow);
+        // Far columns: logo electric blue. Near cursor: bright sky glow.
+        const r = Math.round(30 + (56 - 30) * glow);
+        const g = Math.round(167 + (189 - 167) * glow);
+        const b = Math.round(234 + (248 - 234) * glow);
         ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${0.55 + glow * 0.4})`;
 
         const ch = glyphs[(Math.random() * glyphs.length) | 0];

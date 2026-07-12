@@ -68,6 +68,7 @@ const faqs = [
   { q: 'How long does a new build take?', a: 'A focused 5–7 page small business site typically launches in 2–3 weeks. Larger builds with custom features or e-commerce run 4–6 weeks. Weekly sprints with previews.' },
   { q: 'Do you work with WordPress, or something else?', a: "Both. WordPress with the Divi theme when you need a CMS your team can update. A modern static stack (Astro) when speed and SEO are the priority. I'll recommend the right tool for your situation." },
   { q: 'Where are you located?', a: 'Web Guy Nick LLC is based in Rialto, California, serving small businesses across the US. Everything is handled remotely with weekly check-ins.' },
+  { q: 'Are you a giant agency with a account manager named Kent?', a: "Nope. You get me — Nick — not a rotating cast of account managers and a monthly \"synergy\" call. One real human who answers the phone, writes the code, and actually remembers your project. As Comic Book Guy would say: worst agency runaround? That's the one you'll never get here." },
 ];
 
 const faqJsonLd = {
@@ -135,6 +136,9 @@ const hostBadges: Record<string, { tag: string; color: string }> = {
             <a href="/contact" class="btn-primary text-base">Get a free 20-min audit</a>
             <a href="#care-plans" class="btn-ghost text-base">See care plans</a>
           </div>
+          <p class="mt-4 text-sm text-slate-400">
+            No agencies, no "synergy," no D'oh moments — just a fast site that sells. <span class="text-brand-accent">Real human, one email away.</span>
+          </p>
           <dl class="mt-12 grid max-w-2xl grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-4">
             <div><dt class="text-3xl font-bold text-white">10+</dt><dd class="mt-1 text-sm text-slate-400">Years building</dd></div>
             <div><dt class="text-3xl font-bold text-white">&lt;1.5s</dt><dd class="mt-1 text-sm text-slate-400">Average LCP</dd></div>
@@ -335,6 +339,29 @@ const hostBadges: Record<string, { tag: string; color: string }> = {
           </figure>
         ))}
       </div>
+    </div>
+  </section>
+
+  <!-- PERSONALITY STRIP -->
+  <section class="relative overflow-hidden border-b border-white/10 bg-gradient-to-r from-brand-blue/20 via-transparent to-brand-blue/20">
+    <div class="mx-auto max-w-5xl px-5 py-14 text-center">
+      <div class="text-xs font-semibold uppercase tracking-wider text-brand-yellow">The fine print, minus the boring</div>
+      <p class="mx-auto mt-3 max-w-3xl text-2xl font-bold leading-snug text-white md:text-3xl">
+        A slow website is like a monorail salesman — smooth talk, no results.
+        <span class="text-brand-accent">I build the kind that actually shows up.</span>
+      </p>
+      <p class="mx-auto mt-4 max-w-2xl text-slate-300">
+        Professional work, plain English, and a personality that won't put you to sleep. Everything I recommend, use, and share lives in one place.
+      </p>
+      <a
+        href="https://link.me/webguynick"
+        target="_blank"
+        rel="me noopener"
+        class="mt-6 inline-flex items-center gap-2 rounded-lg border border-brand-accent/40 px-5 py-2.5 text-sm font-semibold text-brand-accent transition hover:bg-brand-accent/10"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.5-1.5"/></svg>
+        Every link, tool &amp; deal → link.me/webguynick
+      </a>
     </div>
   </section>
 
